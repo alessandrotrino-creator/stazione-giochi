@@ -1,0 +1,38 @@
+/* English. BOZZA DA REVISIONARE (prima traduzione di Claude, 2 novembre 2026). */
+Lingue.registra("en", {
+  nome: "English", dir: "ltr",
+  font: '"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif'
+}, {
+  "ui.lingua": "Language",
+  "ui.aiuto": "Hint",
+  "ui.quaderno": "Notebook",
+  "ui.rileggi": "Re-read",
+  "ui.lente": "Magnifier",
+  "ui.audio": "Sound",
+  "ui.impostazioni": "Options",
+  "ui.zaino": "Backpack",
+  "ui.guarda": "Look",
+  "ui.usa": "Take / use",
+  "ui.parla": "Talk",
+  "ui.chiudi": "Close",
+  "ui.usaOggetto": "Use this item",
+  "ui.usaCon": "Use {ogg} with {cosa}",
+  "ui.tocca": "▶ tap to continue",
+  "ui.zainoVuoto": "The backpack is empty.",
+  "ui.loSapevi": "Did you know…?",
+  "ui.quadernoVuoto": "No notes yet. Go and explore!",
+  "ui.storico": "Recent lines",
+  "ui.scegliLingua": "Choose your language",
+  "ui.doppi": "Double subtitles: Italian + chosen language",
+  "ui.bozza": "Draft translation",
+  "ui.bozzaSpiegazione": "This translation is a first draft and still needs checking by a native speaker.",
+  "ui.testoGrande": "Bigger text",
+  "ui.audioAcceso": "Sound on",
+  "ui.ricomincia": "Start again",
+  "ui.confermaRicomincia": "Do you really want to start again? This class's progress will be deleted.",
+  "ui.si": "Yes, start again",
+  "ui.no": "No, back to the game",
+  "ui.salvato": "✓ Saved",
+  "ui.chiEra": "Who was it? Collector cards",
+  "ui.appunti": "Notes and clues"
+});

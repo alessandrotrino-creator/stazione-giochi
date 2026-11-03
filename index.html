@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stazione dei giochi</title>
+<link rel="stylesheet" href="motore/font/font.css">
+<link rel="stylesheet" href="motore/motore.css">
+<link rel="stylesheet" href="stazione/stazione.css">
+</head>
+<body>
+<!--
+  STAZIONE DEI GIOCHI. Per avviare: doppio clic su questo file (si apre in Chrome o Edge).
+  Funziona senza internet e senza installare nulla.
+  Si apre la stazione: biglietto della classe → treno (gioco) → capitolo.
+  I file dei capitoli vengono caricati solo quando si parte.
+-->
+
+<!-- versione: "classe" (LIM) oppure "casa" (pacchetto per gli studenti) -->
+<script src="modalita.js"></script>
+<script src="casa-impostazioni.js"></script>
+
+<!-- motore comune -->
+<script src="motore/lingue.js"></script>
+<script src="motore/salvataggio.js"></script>
+<script src="motore/audio.js"></script>
+<script src="motore/grafica.js"></script>
+<script src="motore/motore.js"></script>
+<script src="motore/piattaforma.js"></script>
+<script src="motore/casa.js"></script>
+
+<!-- lingue della piattaforma (una per file) -->
+<script src="lingue/it.js"></script>
+<script src="lingue/en.js"></script>
+<script src="lingue/fr.js"></script>
+<script src="lingue/ar.js"></script>
+<script src="lingue/es.js"></script>
+<script src="lingue/casa.js"></script>
+
+<!-- impostazioni della scuola: le classi create al primo avvio -->
+<script src="scuola.js"></script>
+
+<!-- la stazione (menu) -->
+<script src="stazione/grafica.js"></script>
+<script src="stazione/testi.js"></script>
+<script src="stazione/stazione.js"></script>
+
+<!-- i giochi: un file "gioco.js" per materia (per aggiungere una materia basta aggiungere qui una riga) -->
+<script src="giochi/scienze/gioco.js"></script>
+<script src="giochi/matematica/gioco.js"></script>
+
+<script>
+  window.addEventListener("load", function () { Piattaforma.avvia(); });
+</script>
+</body>
+</html>

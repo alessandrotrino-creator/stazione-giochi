@@ -1,0 +1,38 @@
+/* Français. BOZZA DA REVISIONARE (prima traduzione di Claude, 2 novembre 2026). */
+Lingue.registra("fr", {
+  nome: "Français", dir: "ltr",
+  font: '"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif'
+}, {
+  "ui.lingua": "Langue",
+  "ui.aiuto": "Indice",
+  "ui.quaderno": "Carnet",
+  "ui.rileggi": "Relire",
+  "ui.lente": "Loupe",
+  "ui.audio": "Son",
+  "ui.impostazioni": "Options",
+  "ui.zaino": "Sac à dos",
+  "ui.guarda": "Regarder",
+  "ui.usa": "Prendre / utiliser",
+  "ui.parla": "Parler",
+  "ui.chiudi": "Fermer",
+  "ui.usaOggetto": "Utiliser cet objet",
+  "ui.usaCon": "Utiliser {ogg} avec {cosa}",
+  "ui.tocca": "▶ touche pour continuer",
+  "ui.zainoVuoto": "Le sac à dos est vide.",
+  "ui.loSapevi": "Le savais-tu ?",
+  "ui.quadernoVuoto": "Pas encore de notes. Explore !",
+  "ui.storico": "Dernières répliques",
+  "ui.scegliLingua": "Choisis la langue",
+  "ui.doppi": "Double sous-titrage : italien + langue choisie",
+  "ui.bozza": "Traduction provisoire",
+  "ui.bozzaSpiegazione": "Cette traduction est un premier jet : elle doit encore être relue par une personne de langue maternelle française.",
+  "ui.testoGrande": "Textes plus grands",
+  "ui.audioAcceso": "Son activé",
+  "ui.ricomincia": "Recommencer",
+  "ui.confermaRicomincia": "Veux-tu vraiment tout recommencer ? La progression de cette classe sera effacée.",
+  "ui.si": "Oui, recommencer",
+  "ui.no": "Non, retour au jeu",
+  "ui.salvato": "✓ Sauvegardé",
+  "ui.chiEra": "Qui était-ce ? Les cartes",
+  "ui.appunti": "Notes et indices"
+});

@@ -1,0 +1,116 @@
+/* Stile della STAZIONE (menu iniziale). Usa anche gli stili comuni di motore/motore.css. */
+.stazione .ui { font-size: calc(24px * var(--t)); }
+
+/* tabellone delle partenze, a palette */
+.tabellone {
+  position: absolute; left: 420px; top: 26px; width: 760px; padding: 10px 16px 14px; border-radius: 10px;
+  background: #0d0b12; border: 6px solid #2a2a3a; box-shadow: 0 12px 30px #000a, inset 0 0 0 3px #000;
+  font-family: var(--font); color: #ffd36b; pointer-events: none;
+}
+.tb-titolo { text-align: center; font-weight: 800; letter-spacing: .12em; color: #f6efe0; font-size: calc(18px * var(--t)); margin-bottom: 6px; text-transform: uppercase; }
+.tb-riga {
+  display: grid; grid-template-columns: 46px 1fr 190px 150px; gap: 8px; align-items: center; margin-top: 5px;
+  padding: 4px 8px; background: #1c1824; border-radius: 4px; font-weight: 800; font-size: calc(22px * var(--t));
+  border-top: 2px solid #000; position: relative; transform-origin: 50% 50%;
+}
+.tb-riga::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: #000; opacity: .8; }
+.tb-riga.gira { animation: palette .7s ease-out both; }
+@keyframes palette { 0% { transform: rotateX(90deg); } 40% { transform: rotateX(-30deg); } 70% { transform: rotateX(12deg); } 100% { transform: none; } }
+.tb-bin { background: #ffd36b; color: #0d0b12; border-radius: 4px; text-align: center; }
+.tb-mat { color: #9fd7ff; }
+.tb-stato { color: #7fe3a0; font-size: calc(17px * var(--t)); text-align: end; }
+
+/* treni cliccabili e loro nomi */
+.st-treni { position: absolute; inset: 0; pointer-events: none; }
+.st-treno { position: absolute; pointer-events: auto; background: transparent; border: 0; border-radius: 30px; cursor: pointer; transition: box-shadow .2s, background .2s; }
+.st-treno:hover, .st-treno:focus-visible { background: rgba(255, 211, 107, .12); box-shadow: 0 0 0 5px rgba(255, 211, 107, .7), 0 0 40px rgba(255, 211, 107, .5); outline: none; }
+.st-nome-treno {
+  position: absolute; width: 330px; pointer-events: none; text-align: center; transform: translateY(-100%);
+  padding: 8px 12px; border-radius: 12px; background: rgba(13, 10, 24, .88); border: 3px solid var(--carta);
+  font-weight: 800; font-size: calc(24px * var(--t)); color: var(--oro); line-height: 1.15;
+}
+.st-nome-treno small { display: block; color: var(--carta); font-size: .72em; font-weight: 700; }
+.st-nome-treno.vuoto { color: #c8c4dc; border-style: dashed; }
+
+/* biglietto scelto */
+.st-biglietto-scelto {
+  position: absolute; top: 24px; inset-inline-start: 22px; max-width: 360px; cursor: pointer;
+  padding: 10px 18px; border-radius: 10px; background: #f6e7b8; color: var(--inchiostro); border: 4px dashed #8a5a32;
+  font-family: inherit; font-weight: 800; font-size: calc(22px * var(--t)); box-shadow: 0 6px 0 #5a3a20; text-align: start;
+}
+.st-cambia { display: block; font-size: .7em; color: #8a5a32; text-decoration: underline; }
+.st-biglietti { display: flex; flex-wrap: wrap; gap: 16px; }
+.st-biglietto {
+  width: 250px; min-height: 140px; padding: 14px 18px; border-radius: 12px; cursor: pointer; font-family: inherit; text-align: start;
+  background: linear-gradient(90deg, #f6e7b8 0 78%, #e8d49a 78%); color: var(--inchiostro); border: 4px solid #8a5a32;
+  display: flex; flex-direction: column; gap: 4px; box-shadow: 0 6px 0 #5a3a20; position: relative;
+}
+.st-biglietto.scelto { outline: 6px solid var(--oro); }
+.st-b-tipo { font-size: calc(15px * var(--t)); letter-spacing: .1em; text-transform: uppercase; color: #8a5a32; font-weight: 800; }
+.st-b-nome { font-size: calc(36px * var(--t)); font-weight: 900; line-height: 1.1; overflow-wrap: anywhere; }
+.st-biglietto.con-nome .st-b-nome { font-size: calc(28px * var(--t)); }
+.st-b-anno { font-size: calc(18px * var(--t)); }
+
+/* elenco capitoli */
+.st-materia { color: var(--carta); font-size: .7em; }
+.st-anno { margin: 22px 0 8px; font-size: calc(24px * var(--t)); color: #9fd7ff; }
+.st-cap { display: flex; align-items: center; gap: 16px; padding: 10px 14px; margin-bottom: 10px; border-radius: 14px; background: #2a2448; }
+.st-cap.chiuso { opacity: .55; }
+.st-cap-n { flex: none; width: 54px; height: 54px; border-radius: 50%; background: var(--oro); color: var(--inchiostro); display: grid; place-items: center; font-weight: 900; font-size: calc(26px * var(--t)); }
+.st-cap-titolo { flex: 1; font-weight: 800; font-size: calc(26px * var(--t)); }
+.st-cap-stato { font-size: calc(18px * var(--t)); color: #c8c4dc; }
+.st-cap .pn-tasto { margin: 0; }
+.st-officina { font-size: calc(26px * var(--t)); color: var(--oro); }
+
+/* orologio (ingresso segreto per il docente) */
+.st-orologio { position: absolute; left: 1392px; top: 122px; width: 156px; height: 156px; border-radius: 50%; cursor: default; touch-action: none; }
+.st-anello { position: absolute; inset: -8px; border-radius: 50%; border: 8px solid transparent; }
+.st-anello.carica { border-color: var(--oro); animation: anello 3s linear forwards; clip-path: inset(0 0 0 0); }
+@keyframes anello { from { opacity: .2; transform: scale(.9); } to { opacity: 1; transform: scale(1.06); } }
+
+/* Ottavio e il suo fumetto */
+.st-ottavio { position: absolute; left: 1040px; top: 640px; width: 150px; height: 170px; cursor: pointer; }
+.st-ottavio svg { width: 100%; height: 100%; overflow: visible; }
+.st-ottavio.salta svg { animation: salta .45s ease-out 2; }
+.st-fumetto {
+  position: absolute; left: 860px; top: 520px; width: 460px; padding: 12px 18px; border-radius: 18px;
+  background: var(--carta); color: var(--inchiostro); border: 4px solid var(--inchiostro); font-size: calc(22px * var(--t)); line-height: 1.3;
+  opacity: 0; transform: scale(.8); transition: opacity .2s, transform .2s; pointer-events: none;
+}
+.st-fumetto b { display: block; color: #1f3a6a; font-size: .8em; }
+.st-fumetto.mostra { opacity: 1; transform: none; }
+.st-fumetto::after { content: ""; position: absolute; left: 230px; bottom: -22px; border: 12px solid transparent; border-top: 14px solid var(--inchiostro); }
+
+/* modalità docente */
+.doc-schede { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.doc-scheda { font-family: inherit; font-size: calc(19px * var(--t)); font-weight: 800; padding: 8px 16px; border-radius: 10px; cursor: pointer; background: #2a2448; color: var(--carta); border: 3px solid #4a4470; }
+.doc-scheda.attiva { background: var(--oro); color: var(--inchiostro); border-color: var(--inchiostro); }
+.doc-riga { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 12px; margin-bottom: 8px; border-radius: 10px; background: #2a2448; font-size: calc(20px * var(--t)); }
+.doc-riga > b { flex: 1; min-width: 200px; }
+.doc-piccolo { font-family: inherit; font-size: calc(17px * var(--t)); font-weight: 700; padding: 6px 12px; border-radius: 8px; cursor: pointer; background: var(--carta); color: var(--inchiostro); border: 2px solid var(--inchiostro); }
+.doc-piccolo.si { background: #7fe3a0; }
+.doc-piccolo.no { background: #ff8a7a; }
+.doc-input { font-family: inherit; font-size: calc(22px * var(--t)); padding: 8px 12px; border-radius: 8px; border: 3px solid #4a4470; background: #fff; color: var(--inchiostro); width: 220px; }
+.doc-select { font-family: inherit; font-size: calc(20px * var(--t)); padding: 6px 10px; border-radius: 8px; }
+.doc-nota { font-size: calc(18px * var(--t)) !important; color: #c8c4dc; }
+.doc-barra { height: 14px; border-radius: 7px; background: #ff8a7a; min-width: 6px; }
+.doc-errore { display: grid; grid-template-columns: 1fr 60px 220px; gap: 10px; align-items: center; margin: 4px 0; font-size: calc(19px * var(--t)); }
+.doc-avviso { padding: 10px 14px; border-radius: 10px; background: #5a3a1e; border: 2px solid var(--oro); margin-bottom: 12px; font-size: calc(19px * var(--t)); }
+.doc-tastierino { display: grid; grid-template-columns: repeat(3, 96px); gap: 10px; justify-content: center; margin: 16px 0; }
+.doc-tastierino button { font-family: inherit; font-size: 34px; font-weight: 800; height: 76px; border-radius: 14px; cursor: pointer; background: var(--carta); border: 4px solid var(--inchiostro); }
+.doc-codice { text-align: center; font-size: 44px; letter-spacing: .4em; min-height: 56px; color: var(--oro); }
+
+/* ---------- modalità casa: numero di registro, parola d'ordine, codice ---------- */
+.st-numero { text-align: center; font-size: 56px; font-weight: 800; min-height: 70px; color: var(--oro); }
+.st-tastierino { display: grid; grid-template-columns: repeat(3, 104px); gap: 12px; justify-content: center; margin: 12px 0; direction: ltr; }
+.st-tastierino button { font-family: inherit; font-size: 38px; font-weight: 800; height: 80px; border-radius: 14px; cursor: pointer; background: var(--carta); border: 4px solid var(--inchiostro); color: var(--inchiostro); }
+.st-tastierino button.principale { background: var(--oro); }
+.st-parola { display: block; margin: 14px auto; font-family: inherit; font-size: 40px; font-weight: 800; text-align: center; letter-spacing: .12em; text-transform: uppercase;
+  width: 80%; padding: 12px 16px; border-radius: 12px; border: 4px solid var(--inchiostro); background: #fff; color: var(--inchiostro); }
+.st-parola-no { min-height: 1.4em; color: #ff9b8f; text-align: center; font-weight: 700; }
+.st-cap-codice { font-size: calc(20px * var(--t)); font-weight: 800; color: var(--oro); letter-spacing: .06em; direction: ltr; unicode-bidi: isolate; }
+.doc-input.corto { width: 100px; }
+.doc-parola { font-size: calc(24px * var(--t)); letter-spacing: .12em; color: var(--oro); }
+.doc-esito { margin: 10px 0 16px; padding: 12px 16px; border-radius: 12px; font-size: calc(20px * var(--t)); line-height: 1.5; }
+.doc-esito.si { background: #1f4a32; border: 3px solid #5fd08a; }
+.doc-esito.no { background: #4a1f26; border: 3px solid #ff8f8f; }

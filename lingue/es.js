@@ -1,0 +1,38 @@
+/* Español. BOZZA DA REVISIONARE (prima traduzione di Claude, 2 novembre 2026). */
+Lingue.registra("es", {
+  nome: "Español", dir: "ltr",
+  font: '"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif'
+}, {
+  "ui.lingua": "Idioma",
+  "ui.aiuto": "Pista",
+  "ui.quaderno": "Cuaderno",
+  "ui.rileggi": "Releer",
+  "ui.lente": "Lupa",
+  "ui.audio": "Sonido",
+  "ui.impostazioni": "Opciones",
+  "ui.zaino": "Mochila",
+  "ui.guarda": "Mirar",
+  "ui.usa": "Tomar / usar",
+  "ui.parla": "Hablar",
+  "ui.chiudi": "Cerrar",
+  "ui.usaOggetto": "Usar este objeto",
+  "ui.usaCon": "Usar {ogg} con {cosa}",
+  "ui.tocca": "▶ toca para continuar",
+  "ui.zainoVuoto": "La mochila está vacía.",
+  "ui.loSapevi": "¿Sabías que…?",
+  "ui.quadernoVuoto": "Todavía no hay notas. ¡Explora!",
+  "ui.storico": "Últimas frases",
+  "ui.scegliLingua": "Elige el idioma",
+  "ui.doppi": "Subtítulos dobles: italiano + idioma elegido",
+  "ui.bozza": "Traducción provisional",
+  "ui.bozzaSpiegazione": "Esta traducción es un primer borrador y todavía debe revisarla un hablante nativo.",
+  "ui.testoGrande": "Textos más grandes",
+  "ui.audioAcceso": "Sonido activado",
+  "ui.ricomincia": "Empezar de nuevo",
+  "ui.confermaRicomincia": "¿De verdad quieres empezar de nuevo? Se borrará el progreso de esta clase.",
+  "ui.si": "Sí, empezar de nuevo",
+  "ui.no": "No, volver al juego",
+  "ui.salvato": "✓ Guardado",
+  "ui.chiEra": "¿Quién era? Los cromos",
+  "ui.appunti": "Notas y pistas"
+});

@@ -1,0 +1,38 @@
+/* Italiano: lingua base della piattaforma. Testi dell'interfaccia comune a tutti i giochi. */
+Lingue.registra("it", {
+  nome: "Italiano", dir: "ltr",
+  font: '"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif'
+}, {
+  "ui.lingua": "Lingua",
+  "ui.aiuto": "Aiuto",
+  "ui.quaderno": "Quaderno",
+  "ui.rileggi": "Rileggi",
+  "ui.lente": "Lente",
+  "ui.audio": "Audio",
+  "ui.impostazioni": "Opzioni",
+  "ui.zaino": "Zaino",
+  "ui.guarda": "Guarda",
+  "ui.usa": "Prendi / usa",
+  "ui.parla": "Parla",
+  "ui.chiudi": "Chiudi",
+  "ui.usaOggetto": "Usa questo oggetto",
+  "ui.usaCon": "Usa {ogg} con {cosa}",
+  "ui.tocca": "▶ tocca per continuare",
+  "ui.zainoVuoto": "Lo zaino è vuoto.",
+  "ui.loSapevi": "Lo sapevi che…?",
+  "ui.quadernoVuoto": "Ancora nessun appunto. Esplora!",
+  "ui.storico": "Le ultime battute",
+  "ui.scegliLingua": "Scegli la lingua",
+  "ui.doppi": "Sottotitoli doppi: italiano + lingua scelta",
+  "ui.bozza": "Traduzione in bozza",
+  "ui.bozzaSpiegazione": "",
+  "ui.testoGrande": "Testi più grandi",
+  "ui.audioAcceso": "Audio acceso",
+  "ui.ricomincia": "Ricomincia da capo",
+  "ui.confermaRicomincia": "Vuoi davvero ricominciare da capo? I progressi di questa classe saranno cancellati.",
+  "ui.si": "Sì, ricomincia",
+  "ui.no": "No, torna al gioco",
+  "ui.salvato": "✓ Salvato",
+  "ui.chiEra": "Chi era? Le figurine",
+  "ui.appunti": "Appunti e indizi"
+});

@@ -1,0 +1,412 @@
+/* =====================================================================
+   Stile del MOTORE: comune a tutti i giochi.
+   Tutte le misure sono in pixel del "palco" 1600×900, che si adatta allo schermo.
+   ===================================================================== */
+:root {
+  --inchiostro: #140d1f;
+  --carta: #fff8e6;
+  --oro: #ffd36b;
+  --pannello: #1b1830;
+  --velo: rgba(5, 4, 12, .72);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+body { -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+
+.contenitore { position: fixed; inset: 0; background: #000; }
+.palco {
+  --font: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  --t: 1;
+  position: absolute; left: 0; top: 0; width: 1600px; height: 900px;
+  transform-origin: 0 0; overflow: hidden; background: #0b0d1a;
+  font-family: var(--font); color: var(--carta);
+}
+.palco.testo-grande { --t: 1.25; }
+.l-sfondo, .l-elementi, .l-attori, .l-effetti, .l-hotspot, .ui { position: absolute; inset: 0; }
+/* ordine dei livelli: ogni livello ha il suo, così i personaggi non finiscono mai sopra l'interfaccia */
+.l-sfondo { z-index: 0; } .l-elementi { z-index: 1; } .l-attori { z-index: 2; }
+.l-effetti { z-index: 3; } .l-hotspot { z-index: 4; } .ui { z-index: 5; }
+.l-sfondo svg { width: 100%; height: 100%; display: block; }
+.l-elementi, .l-attori, .l-effetti { pointer-events: none; }
+
+/* punti interattivi: invisibili, si illuminano con la lente */
+.l-hotspot { width: 1600px; height: 900px; }
+.l-hotspot .hs { fill: rgba(255, 255, 255, 0); pointer-events: all; cursor: pointer; transition: fill .2s, stroke .2s; }
+.l-hotspot .hs:hover { fill: rgba(255, 220, 140, .08); }
+.l-hotspot.lente .hs { fill: rgba(255, 211, 107, .18); stroke: #ffd36b; stroke-width: 4; stroke-dasharray: 14 8; animation: lampeggio 0.7s ease-in-out 3; }
+@keyframes lampeggio { 50% { fill: rgba(255, 211, 107, .38); } }
+
+/* elementi della scena */
+.elemento { position: absolute; transform-origin: center; }
+.elemento svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.elemento.etichetta {
+  padding: 4px 12px; border: 3px solid var(--inchiostro); border-radius: 5px;
+  font-weight: 800; font-size: 19px; line-height: 1.15; text-align: center; color: var(--inchiostro);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .35); white-space: nowrap;
+}
+.elemento.rosa { background: #ff5fa2; }
+.elemento.cartello-uscita { background: #1d3a2a; color: #e8ffe8; border-color: #7fe3a0; font-size: 18px; padding: 6px 12px; }
+.elemento.cartello-uscita.chiusa { background: #3a2a2a; color: #ffd0c8; border-color: #ff8a7a; }
+.elemento.turri svg { animation: galleggia 3s ease-in-out infinite; overflow: visible; }
+@keyframes galleggia { 50% { transform: translateY(-14px); } }
+.elemento.etichetta.piccola { font-size: 12px; padding: 2px 6px; border-width: 2px; max-width: 108px; white-space: normal; line-height: 1.05; }
+.elemento.bianca { background: #fffdf4; }
+.elemento.compare { animation: compare .6s ease-out; }
+@keyframes compare { from { transform: scale(.2) rotate(-20deg); opacity: 0; } }
+
+/* attori (personaggi) */
+.attore { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: transform; }
+.attore .corpo { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.attore svg { position: absolute; overflow: visible; }
+/* camminata: gambe e braccia alternate; il corpo si abbassa quando le gambe sono divaricate,
+   così i piedi restano a terra. Un ciclo (due passi) copre 4·L·sin(16°) ≈ 270 px a velocità 340 px/s */
+.attore { --ciclo: .8s; --abbassa: 10px; --anca-a: -17px; --anca-b: 17px; }
+.attore svg .gamba-dietro, .attore svg .gamba-avanti, .attore svg .stinco-dietro, .attore svg .stinco-avanti,
+.attore svg .braccio-dietro, .attore svg .braccio-avanti, .attore svg .pendolo { transform-box: fill-box; }
+.attore svg .busto, .attore svg .borsa { transform-box: fill-box; }
+.attore svg .busto { transform-origin: 44% 85%; }      /* perno sui fianchi */
+.attore svg .borsa { transform-origin: 136% 55%; }     /* stesso perno, visto dalla borsa */
+/* busto: leggera inclinazione in avanti + rotazione alternata delle spalle, opposta alle gambe */
+.attore .corpo.cammina .busto, .attore .corpo.cammina .borsa { animation: busto var(--ciclo) ease-in-out infinite; }
+@keyframes busto {
+  0%, 100% { transform: rotate(3.5deg) scaleX(1.04); }
+  25% { transform: rotate(2deg) scaleX(1); }
+  50% { transform: rotate(.5deg) scaleX(.96); }
+  75% { transform: rotate(2deg) scaleX(1); }
+}
+.attore svg .stinco-dietro { transform-origin: 65% 6%; }
+.attore svg .stinco-avanti { transform-origin: 24% 6%; }
+/* ginocchio: dritto quando il piede tocca terra, piegato quando la gamba torna avanti */
+.attore .corpo.cammina .stinco-avanti { animation: ginocchio var(--ciclo) linear infinite; }
+.attore .corpo.cammina .stinco-dietro { animation: ginocchio var(--ciclo) linear infinite; animation-delay: calc(var(--ciclo) * -0.5); }
+@keyframes ginocchio {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(9deg); }
+  38% { transform: rotate(3deg); }
+  55% { transform: rotate(22deg); }
+  72% { transform: rotate(42deg); }
+  90% { transform: rotate(6deg); }
+  100% { transform: rotate(0deg); }
+}
+.attore svg .gamba-dietro { transform-origin: 69% 1%; }
+.attore svg .gamba-avanti { transform-origin: 25% 1%; }
+.attore svg .braccio-dietro { transform-origin: 60% 7%; }
+.attore svg .braccio-avanti { transform-origin: 21% 6%; }
+.attore svg .pendolo { transform-origin: 50% 0%; }
+.attore .corpo.cammina svg { animation: passo var(--ciclo) linear infinite; }
+.attore .corpo.cammina .gamba-avanti { animation: gamba-a var(--ciclo) linear infinite; }
+.attore .corpo.cammina .gamba-dietro { animation: gamba-b var(--ciclo) linear infinite; }
+.attore .corpo.cammina .braccio-dietro { animation: braccio-a var(--ciclo) ease-in-out infinite; }
+.attore .corpo.cammina .braccio-avanti { animation: braccio-b var(--ciclo) ease-in-out infinite; }
+.attore .corpo.cammina .pendolo { animation: pendolo var(--ciclo) ease-in-out infinite; }
+/* nel passo le due anche si allineano (vista di profilo): così le gambe non si incrociano a forbice */
+@keyframes gamba-a { 0%, 100% { transform: translateX(var(--anca-a)) rotate(-16deg); } 50% { transform: translateX(var(--anca-a)) rotate(16deg); } }
+@keyframes gamba-b { 0%, 100% { transform: translateX(var(--anca-b)) rotate(16deg); } 50% { transform: translateX(var(--anca-b)) rotate(-16deg); } }
+@keyframes braccio-a { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+@keyframes braccio-b { 0%, 100% { transform: rotate(5deg); } 50% { transform: rotate(-5deg); } }
+@keyframes pendolo { 0%, 100% { transform: rotate(10deg); } 50% { transform: rotate(-10deg); } }
+@keyframes passo {
+  0%, 50%, 100% { transform: translateY(var(--abbassa)); animation-timing-function: ease-out; }
+  25%, 75% { transform: translateY(0); animation-timing-function: ease-in; }
+}
+/* --- vista DI PROFILO: anche già allineate, braccia che oscillano ampie, busto inclinato in avanti --- */
+.attore .vista-profilo { --anca-a: 0px; --anca-b: 0px; }
+.attore .vista-profilo .gamba-dietro, .attore .vista-profilo .gamba-avanti { transform-origin: 33% 1%; }
+.attore .vista-profilo .stinco-dietro, .attore .vista-profilo .stinco-avanti { transform-origin: 30% 6%; }
+.attore .vista-profilo .braccio-avanti { transform-origin: 30% 6%; }
+.attore .vista-profilo .braccio-dietro { transform-origin: 51% 6%; }
+.attore .vista-profilo .busto { transform-origin: 55% 84%; }
+.attore .vista-profilo .borsa { transform-origin: 133% 57%; }
+.attore .corpo.cammina .vista-profilo .braccio-avanti { animation-name: braccio-c; }
+.attore .corpo.cammina .vista-profilo .braccio-dietro { animation-name: braccio-d; }
+.attore .corpo.cammina .vista-profilo .busto, .attore .corpo.cammina .vista-profilo .borsa { animation-name: busto-profilo; }
+@keyframes braccio-c { 0%, 100% { transform: rotate(14deg); } 50% { transform: rotate(-14deg); } }
+@keyframes braccio-d { 0%, 100% { transform: rotate(-16deg); } 50% { transform: rotate(16deg); } }
+@keyframes busto-profilo { 0%, 50%, 100% { transform: rotate(4deg); } 25%, 75% { transform: rotate(2.5deg); } }
+
+/* --- vista DI SCHIENA: i piedi si alzano a turno, le spalle ondeggiano --- */
+.attore .vista-schiena .gamba-sx, .attore .vista-schiena .gamba-dx,
+.attore .vista-schiena .braccio-sx, .attore .vista-schiena .braccio-dx { transform-box: fill-box; }
+.attore .vista-schiena .gamba-sx, .attore .vista-schiena .gamba-dx { transform-origin: 50% 0%; }
+.attore .vista-schiena .braccio-sx { transform-origin: 67% 3%; }
+.attore .vista-schiena .braccio-dx { transform-origin: 30% 3%; }
+.attore .vista-schiena .busto { transform-origin: 49% 84%; }
+.attore .corpo.cammina .vista-schiena .gamba-sx { animation: gamba-su var(--ciclo) linear infinite; }
+.attore .corpo.cammina .vista-schiena .gamba-dx { animation: gamba-su var(--ciclo) linear infinite; animation-delay: calc(var(--ciclo) * -0.5); }
+.attore .corpo.cammina .vista-schiena .braccio-dx { animation: braccio-dorso var(--ciclo) ease-in-out infinite; }
+.attore .corpo.cammina .vista-schiena .braccio-sx { animation: braccio-dorso var(--ciclo) ease-in-out infinite; animation-delay: calc(var(--ciclo) * -0.5); }
+.attore .corpo.cammina .vista-schiena .busto { animation: busto-dorso var(--ciclo) ease-in-out infinite; }
+.attore .corpo.cammina .vista-schiena .borsa { animation: none; }
+@keyframes gamba-su { 0%, 50%, 100% { transform: none; } 25% { transform: scaleY(.92); } }
+@keyframes braccio-dorso { 0%, 50%, 100% { transform: none; } 25% { transform: scaleY(.93) rotate(-3deg); } 75% { transform: scaleY(.97) rotate(2deg); } }
+@keyframes busto-dorso { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
+
+.attore .corpo.parla svg { animation: parla .5s ease-in-out infinite; }
+@keyframes parla { 50% { transform: scaleY(1.015) translateY(-2px); } }
+.attore .corpo.salta svg { animation: salta .45s ease-out 2; }
+@keyframes salta { 40% { transform: translateY(-30px) scale(1.05, .95); } 70% { transform: translateY(0) scale(.95, 1.05); } }
+.attore .alone {
+  position: absolute; width: 760px; height: 520px; left: -300px; top: -420px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 207, 112, .42), rgba(255, 154, 60, .14) 55%, rgba(255, 154, 60, 0));
+  mix-blend-mode: screen; transition: opacity .6s; pointer-events: none;
+}
+
+/* cambio di stanza */
+.palco > .l-sfondo, .palco > .l-elementi, .palco > .l-attori, .palco > .l-effetti { transition: opacity .4s; }
+.palco.dissolvenza > .l-sfondo, .palco.dissolvenza > .l-elementi, .palco.dissolvenza > .l-attori, .palco.dissolvenza > .l-effetti { opacity: 0; }
+
+/* cartello del titolo */
+.cartello {
+  position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); z-index: 7; text-align: center; pointer-events: none;
+  padding: 26px 50px; border-radius: 18px; background: rgba(13, 10, 24, .92); border: 5px solid var(--oro);
+  animation: cartello .6s ease-out; max-width: 1100px;
+}
+.cartello b { display: block; font-size: calc(54px * var(--t)); color: var(--oro); line-height: 1.15; }
+.cartello span { display: block; margin-top: 8px; font-size: calc(28px * var(--t)); color: var(--carta); }
+.cartello.via { opacity: 0; transition: opacity .5s; }
+@keyframes cartello { from { opacity: 0; transform: translate(-50%, -40%) scale(.9); } }
+
+/* ritratti che si animano: occhi aperti quando "svegli", bocca che si muove quando parlano */
+.elemento .sveglio-si { display: none; }
+.elemento.sveglio .sveglio-si { display: inline; }
+.elemento.sveglio .sveglio-no { display: none; }
+.elemento.sveglio { filter: drop-shadow(0 0 18px rgba(255, 211, 107, .55)); }
+.elemento.parla .bocca { animation: bocca .22s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 0%; }
+@keyframes bocca { to { transform: scaleY(2.4); } }
+
+/* effetti */
+.effetto { position: absolute; pointer-events: none; }
+.effetto.luce-acquario, .effetto.luce-ritratto {
+  width: 520px; height: 420px; margin: -210px 0 0 -260px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 220, 140, .75), rgba(255, 170, 70, .25) 55%, rgba(255, 170, 70, 0));
+  mix-blend-mode: screen; animation: accendi 1.4s ease-out forwards;
+}
+@keyframes accendi { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+.effetto.scintille { width: 10px; height: 10px; }
+.effetto.scintille i {
+  position: absolute; width: 14px; height: 14px; background: #fff3b0; border-radius: 50%;
+  box-shadow: 0 0 12px #ffd36b; animation: scintilla 1s ease-out forwards;
+}
+@keyframes scintilla { to { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; } }
+.cade { animation: cade 1.1s ease-in forwards; }
+.effetto.spegni { animation: spegni .8s ease-in forwards; }
+@keyframes spegni { from { opacity: 1; } to { opacity: 0; } }
+@keyframes cade { to { transform: translate(40px, 280px) rotate(70deg); opacity: 0; } }
+
+/* ---------------- interfaccia ---------------- */
+.ui { pointer-events: none; font-size: calc(26px * var(--t)); }
+.ui > * { pointer-events: auto; }
+.ui .riga-azione, .ui .bozza, .ui .cursore, .ui .avviso, .ui .sottotitoli:not(.aperti), .ui .velo:not(.aperto) { pointer-events: none; }
+
+.tasto {
+  font-family: inherit; color: var(--carta); background: none; border: 0; padding: 0; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px; width: 104px;
+}
+.tasto .icona {
+  width: 76px; height: 76px; border-radius: 50%; background: var(--carta); border: 5px solid var(--inchiostro);
+  display: grid; place-items: center; box-shadow: 0 5px 0 var(--inchiostro); transition: transform .1s;
+}
+.tasto:active .icona { transform: translateY(4px); box-shadow: 0 1px 0 var(--inchiostro); }
+.tasto .icona svg { width: 48px; height: 48px; }
+.tasto .etich {
+  font-size: calc(17px * var(--t)); font-weight: 700; text-align: center; line-height: 1.1;
+  text-shadow: 0 2px 0 #000, 0 0 6px #000; max-width: 110px;
+}
+.barra-alta { position: absolute; top: 16px; inset-inline-end: 16px; display: flex; gap: 6px; }
+.ui.occupato .barra-alta [data-azione="aiuto"], .ui.occupato .barra-alta [data-azione="quaderno"], .ui.occupato .zaino { opacity: .45; }
+.ui.quaderno-lampeggia [data-azione="quaderno"] .icona, .ui.zaino-lampeggia .zaino .icona { animation: richiamo .4s ease-in-out 3; }
+@keyframes richiamo { 50% { transform: scale(1.18); background: var(--oro); } }
+
+.riga-azione {
+  position: absolute; top: 22px; inset-inline-start: 24px; max-width: 720px;
+  padding: 10px 22px; border-radius: 12px; background: rgba(13, 10, 24, .85); border: 3px solid rgba(255, 248, 230, .5);
+  font-size: calc(26px * var(--t)); font-weight: 700; color: var(--oro);
+}
+.riga-azione.vuota { display: none; }
+.biglietto, .clessidra {
+  position: absolute; bottom: 150px; inset-inline-start: 22px; padding: 5px 14px; border-radius: 8px;
+  background: #f6e7b8; color: var(--inchiostro); border: 3px dashed #8a5a32; font-weight: 800; font-size: calc(17px * var(--t));
+  pointer-events: none; z-index: 3;
+}
+.clessidra { bottom: 196px; background: rgba(13, 10, 24, .85); color: var(--carta); border: 2px solid rgba(255, 248, 230, .5); }
+.clessidra.vuota { display: none; }
+.clessidra.oltre { color: var(--oro); }
+.ui.zaino-aperto .biglietto, .ui.zaino-aperto .clessidra { display: none; }
+.bozza {
+  position: absolute; top: 150px; inset-inline-end: 22px; padding: 4px 12px; border-radius: 8px;
+  background: #5a1f2e; border: 2px solid #ffb0c0; font-size: calc(15px * var(--t)); color: #ffe0e8;
+}
+.bozza.vuota { display: none; }
+
+.zaino { position: absolute; bottom: 16px; inset-inline-start: 16px; z-index: 3; }
+.zaino .icona { width: 96px; height: 96px; }
+.zaino .icona svg { width: 62px; height: 62px; }
+.inventario {
+  position: absolute; bottom: 0; inset-inline: 0; height: 170px; padding-inline-start: 140px; padding-inline-end: 20px;
+  background: linear-gradient(to top, rgba(10, 8, 20, .96), rgba(10, 8, 20, .85)); border-top: 4px solid rgba(255, 248, 230, .5);
+  transform: translateY(100%); transition: transform .25s ease-out; display: flex; align-items: center; z-index: 2;
+}
+.ui.zaino-aperto .inventario { transform: none; }
+.inv-oggetti { display: flex; gap: 14px; align-items: center; overflow-x: auto; }
+.inv-ogg {
+  font-family: inherit; color: var(--carta); width: 132px; height: 150px; border-radius: 16px; cursor: pointer;
+  background: rgba(255, 248, 230, .08); border: 4px solid transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px;
+}
+.inv-ogg svg { width: 96px; height: 96px; }
+.inv-ogg .etich { font-size: calc(15px * var(--t)); font-weight: 700; text-align: center; line-height: 1.1; }
+.inv-ogg.scelto { border-color: var(--oro); background: rgba(255, 211, 107, .2); }
+.inv-vuoto { font-style: italic; color: #c8c4dc; }
+.cursore { position: absolute; left: 0; top: 0; width: 84px; height: 84px; display: none; pointer-events: none; filter: drop-shadow(0 4px 6px #000); }
+.cursore.attivo { display: block; }
+.cursore svg { width: 100%; height: 100%; }
+
+/* ventaglio di azioni */
+.ventaglio { position: absolute; width: 0; height: 0; display: none; z-index: 5; }
+.ventaglio.aperto { display: block; }
+.vt-nome {
+  position: absolute; left: 50%; top: -230px; transform: translateX(-50%); white-space: nowrap;
+  padding: 6px 18px; border-radius: 10px; background: rgba(13, 10, 24, .9); color: var(--oro); font-weight: 800; font-size: calc(24px * var(--t));
+}
+.vt-tasto {
+  position: absolute; width: 130px; margin-left: -65px; margin-top: -75px; background: none; border: 0; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: inherit; color: var(--carta);
+  animation: ventaglio .18s ease-out;
+}
+@keyframes ventaglio { from { transform: scale(.3); opacity: 0; } }
+.vt-tasto .icona {
+  width: 104px; height: 104px; border-radius: 50%; background: var(--carta); border: 5px solid var(--inchiostro);
+  display: grid; place-items: center; box-shadow: 0 6px 0 var(--inchiostro);
+}
+.vt-tasto .icona svg { width: 66px; height: 66px; }
+.vt-tasto .etich { font-weight: 800; font-size: calc(20px * var(--t)); text-shadow: 0 2px 0 #000, 0 0 8px #000; white-space: nowrap; }
+
+/* sottotitoli: grandi, ad alto contrasto, sempre attivi */
+.sottotitoli {
+  position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); width: 1180px; z-index: 4;
+  padding: 18px 30px 14px; border-radius: 18px; background: rgba(10, 8, 20, .93); border: 4px solid var(--carta);
+  display: none; cursor: pointer;
+}
+.sottotitoli.aperti { display: block; animation: compare-st .15s ease-out; }
+@keyframes compare-st { from { opacity: 0; transform: translate(-50%, 10px); } }
+.ui.zaino-aperto .sottotitoli { bottom: 190px; }
+.st-riga { font-size: calc(32px * var(--t)); line-height: 1.38; }
+.st-riga.st-it { font-size: calc(23px * var(--t)); color: #d8d4ea; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 2px dashed rgba(255, 248, 230, .3); }
+.st-tocca { font-size: calc(15px * var(--t)); color: #a8a4c0; text-align: end; margin-top: 4px; }
+
+/* frazioni sempre in colonna, anche in arabo */
+.fr { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1; margin: 0 .12em; font-weight: 800; unicode-bidi: isolate; }
+.fr .fr-n { border-bottom: .09em solid currentColor; padding: 0 .12em .06em; font-size: .78em; }
+.fr .fr-d { padding: .06em .12em 0; font-size: .78em; }
+.num { unicode-bidi: isolate; direction: ltr; }
+
+/* scelte (dialoghi e bivi di classe) */
+.scelte {
+  position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); width: 1240px; z-index: 6;
+  display: none; flex-direction: column; gap: 10px;
+}
+.scelte.aperte { display: flex; }
+.sc-titolo {
+  align-self: center; padding: 8px 24px; border-radius: 12px; background: var(--oro); color: var(--inchiostro);
+  font-weight: 800; font-size: calc(26px * var(--t));
+}
+.sc-opzione {
+  font-family: inherit; text-align: start; cursor: pointer; padding: 14px 22px; border-radius: 14px;
+  background: rgba(10, 8, 20, .95); border: 4px solid var(--carta); color: var(--carta); font-size: calc(28px * var(--t));
+  display: flex; align-items: center; gap: 16px;
+}
+.sc-opzione:hover { background: #2a2448; border-color: var(--oro); }
+.sc-n {
+  flex: none; width: 46px; height: 46px; border-radius: 50%; background: var(--oro); color: var(--inchiostro);
+  display: grid; place-items: center; font-weight: 800;
+}
+
+/* pannelli */
+.velo { position: absolute; inset: 0; background: var(--velo); display: none; z-index: 8; }
+.velo.aperto { display: block; }
+.pannello {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 9;
+  width: 980px; max-height: 800px; overflow: auto; padding: 34px 44px; border-radius: 22px;
+  background: var(--pannello); border: 5px solid var(--carta); box-shadow: 0 20px 60px #000; display: none;
+}
+.pannello.aperto { display: block; }
+.pannello h2 { margin: 0 0 18px; font-size: calc(38px * var(--t)); color: var(--oro); }
+.pannello p, .pannello li { font-size: calc(26px * var(--t)); line-height: 1.45; }
+.pn-chiudi, .pn-tasto, .pn-pericolo {
+  font-family: inherit; font-size: calc(26px * var(--t)); font-weight: 800; cursor: pointer; margin-top: 18px; margin-inline-end: 12px;
+  padding: 14px 30px; border-radius: 14px; border: 4px solid var(--inchiostro); box-shadow: 0 5px 0 var(--inchiostro);
+  background: var(--carta); color: var(--inchiostro);
+}
+.pn-tasto.principale { background: var(--oro); }
+.pn-pericolo { background: #ff8a7a; }
+.pn-lingue { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pn-lingua {
+  font-size: calc(34px * var(--t)); font-weight: 800; padding: 22px; border-radius: 16px; cursor: pointer;
+  background: #2a2448; color: var(--carta); border: 4px solid #4a4470;
+}
+.pn-lingua.attiva { background: var(--oro); color: var(--inchiostro); border-color: var(--inchiostro); }
+.pn-interruttore {
+  display: flex; align-items: center; gap: 16px; width: 100%; margin-top: 18px; padding: 16px 20px; border-radius: 14px; cursor: pointer;
+  font-family: inherit; font-size: calc(24px * var(--t)); text-align: start; background: #2a2448; color: var(--carta); border: 3px solid #4a4470;
+}
+.pn-interruttore .pallino { flex: none; width: 64px; height: 36px; border-radius: 18px; background: #4a4470; position: relative; }
+.pn-interruttore .pallino::after { content: ""; position: absolute; top: 4px; inset-inline-start: 4px; width: 28px; height: 28px; border-radius: 50%; background: var(--carta); transition: inset-inline-start .15s; }
+.pn-interruttore.acceso .pallino { background: #3fa05a; }
+.pn-interruttore.acceso .pallino::after { inset-inline-start: 32px; }
+.pn-nota { color: #ffb0c0; font-size: calc(20px * var(--t)) !important; }
+.pn-sezione { margin: 18px 0 10px; font-size: calc(26px * var(--t)); color: #9fd7ff; }
+.pn-figurine { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.figurina { padding: 14px; border-radius: 14px; background: #f6efe0; color: var(--inchiostro); border: 4px solid #b8892f; box-shadow: 0 5px 0 #5e3f12; }
+.fg-ritratto { width: 120px; height: 138px; float: inline-start; margin-inline-end: 12px; background: #2a2028; border-radius: 10px; border: 3px solid #b8892f; overflow: hidden; }
+.fg-ritratto svg { width: 100%; height: 100%; }
+.fg-ritratto .sveglio-no { display: none; }
+.elemento.ritratto:not(.sveglio) svg { filter: brightness(.55) saturate(.6); }
+.elemento.targa {
+  padding: 3px 10px; border-radius: 4px; border: 2px solid #5e3f12; background: linear-gradient(#f6d27a, #b8892f);
+  color: #2a1a08; font-weight: 800; font-size: 15px; letter-spacing: .04em; white-space: nowrap; box-shadow: 0 2px 0 #000a;
+}
+.elemento.incavo svg, .elemento.cassa svg { width: 100%; height: 100%; }
+.elemento.ombra-etichetti { animation: attraversa 2.4s ease-in-out forwards; }
+@keyframes attraversa { 0% { transform: translateX(-120px); opacity: 0; } 20% { opacity: .9; } 80% { opacity: .9; } 100% { transform: translateX(140px); opacity: 0; } }
+.raggi-x { display: block; width: 420px; height: 320px; margin: 0 auto 14px; border-radius: 14px; background: #06142a; border: 4px solid #7ac8ff; box-shadow: inset 0 0 40px #2a6aa8; }
+.fg-nome { display: block; font-size: calc(24px * var(--t)); }
+.fg-dati { display: block; font-size: calc(17px * var(--t)); color: #5a3a20; margin-bottom: 6px; }
+.figurina .fg-testo { margin: 0; font-size: calc(18px * var(--t)) !important; line-height: 1.35 !important; }
+.pn-elenco { padding-inline-start: 1.2em; margin: 0; }
+.pn-elenco li { margin-bottom: 10px; }
+.pn-storico { max-height: 560px; overflow: auto; }
+.pn-storico p { margin: 0 0 12px; }
+.pn-scheda { display: flex; gap: 30px; align-items: flex-start; }
+.pn-scheda-icona { flex: none; width: 220px; height: 220px; background: var(--carta); border-radius: 26px; border: 5px solid var(--inchiostro); padding: 14px; }
+.pn-scheda-icona svg { width: 100%; height: 100%; }
+.pn-losapevi { margin-top: 12px; padding: 14px 18px; border-radius: 12px; background: #24384a; border-inline-start: 8px solid #7fe3c4; font-size: calc(23px * var(--t)); line-height: 1.4; }
+.pn-fine { font-size: calc(26px * var(--t)); line-height: 1.5; }
+
+.avviso {
+  position: absolute; top: 120px; left: 50%; transform: translateX(-50%); padding: 6px 18px; border-radius: 20px;
+  background: rgba(63, 160, 90, .9); font-size: calc(17px * var(--t)); font-weight: 700; opacity: 0;
+}
+.avviso.mostra { animation: avviso 1.6s ease-out; }
+@keyframes avviso { 15%, 70% { opacity: 1; } }
+
+/* in arabo l'interfaccia si specchia (la scena no: il mondo resta com'è) */
+.ui[dir="rtl"] .pannello, .ui[dir="rtl"] .sc-opzione { text-align: right; }
+/* ogni riga di sottotitolo segue la direzione della propria lingua (utile con i sottotitoli doppi) */
+.st-riga[dir="ltr"] { text-align: left; }
+.st-riga[dir="rtl"] { text-align: right; }
+
+/* ---------- telefoni e tablet ---------- */
+html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.gira-telefono { display: none; position: fixed; inset: 0; z-index: 9999; background: #140d1f; color: #fff8e6;
+  flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 24px; text-align: center;
+  font-family: "Atkinson Hyperlegible", "Noto Sans Arabic", sans-serif; font-size: 22px; font-weight: 700; }
+.gira-telefono svg { width: 120px; height: 120px; animation: gira-telefono 2.4s ease-in-out infinite; }
+@keyframes gira-telefono { 0%, 25% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+@media (orientation: portrait) and (pointer: coarse) { .gira-telefono { display: flex; } }
+
+/* ---------- modalità casa: codice di completamento nel riquadro finale ---------- */
+.pn-codice { margin: 18px 0; padding: 16px 20px; border-radius: 16px; background: #2a2448; border: 3px dashed var(--oro); text-align: center; }
+.pn-codice > b { display: block; font-size: 1.05em; }
+.pn-codice-valore { display: block; margin: 8px 0; font-size: 2.6em; font-weight: 800; letter-spacing: .14em; color: var(--oro); direction: ltr; unicode-bidi: isolate; }
+.pn-codice p { margin: 0; font-size: .9em; color: #c8c4dc; }
+.pn-impronta { margin: 10px auto; width: 560px; max-width: 100%; padding: 10px; border-radius: 16px; background: #d8cdb8; }
+.pn-impronta svg { display: block; width: 100%; height: auto; }

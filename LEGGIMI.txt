@@ -1,0 +1,14 @@
+STAZIONE DEI GIOCHI - VERSIONE PER CASA
+
+Come si gioca
+1. Estrai tutta la cartella dal file .zip (tasto destro > Estrai tutto).
+2. Fai doppio clic su AVVIA.html: si apre nel browser (Chrome, Edge, Firefox o Safari).
+   Non serve internet e non serve installare nulla.
+3. La prima volta scegli la tua classe e scrivi il tuo numero di registro.
+4. Tocca il treno del gioco. I capitoli si aprono con la parola d'ordine
+   che l'insegnante dice in classe.
+5. Alla fine del capitolo compare un codice: scrivilo sul quaderno e
+   portalo in classe. Guarda bene anche l'impronta misteriosa!
+
+Il gioco salva da solo su questo dispositivo. Non raccoglie dati, non usa
+internet, non ha pubblicità.
