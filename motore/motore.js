@@ -330,7 +330,7 @@ var Motore = (function () {
   }
 
   function mostraVentaglio(h, pt) {
-    var v = D.ventaglio, x = Math.max(170, Math.min(LARGO - 170, pt.x)), y = Math.max(240, Math.min(ALTO - 60, pt.y));
+    var v = D.ventaglio, x = Math.max(210, Math.min(LARGO - 210, pt.x)), y = Math.max(240, Math.min(ALTO - 60, pt.y));
     v.innerHTML = '<div class="vt-nome">' + T(h.nome) + "</div>";
     [["guarda", -140, -40], ["usa", 0, -110], ["parla", 140, -40]].forEach(function (d) {
       var b = el("button", "vt-tasto", '<span class="icona">' + ICONE[d[0]] + '</span><span class="etich">' + T("ui." + d[0]) + "</span>");
