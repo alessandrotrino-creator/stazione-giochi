@@ -410,3 +410,25 @@ html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparen
 .pn-codice p { margin: 0; font-size: .9em; color: #c8c4dc; }
 .pn-impronta { margin: 10px auto; width: 560px; max-width: 100%; padding: 10px; border-radius: 16px; background: #d8cdb8; }
 .pn-impronta svg { display: block; width: 100%; height: auto; }
+.periodo { text-decoration: overline; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+
+/* pannelli "da montare" (per esempio gli ingranaggi della frazione generatrice) */
+.ing-numero { font-size: 2.6em; font-weight: 800; text-align: center; color: var(--oro); margin: 4px 0 10px; }
+.ing-etichetta { font-weight: 700; margin: 8px 0 4px; color: #c8c4dc; }
+.ing-riga { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.ing-tasto { width: 104px; height: 104px; padding: 0; border: 0; background: none; cursor: pointer; transition: transform .15s; }
+.ing-tasto svg { width: 100%; height: 100%; }
+.ing-tasto:hover { transform: rotate(15deg); }
+.ing-tasto.scelto { transform: rotate(30deg) scale(1.08); }
+
+/* la bilancia da riempire con i pesetti */
+.bil-disegno { width: 260px; margin: 0 auto; }
+.bil-disegno svg { width: 100%; height: auto; display: block; }
+.bil-stato { text-align: center; font-weight: 800; font-size: 1.15em; color: var(--oro); margin: 4px 0 10px; }
+.bil-pesi { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 12px; direction: ltr; }
+.bil-peso { min-width: 92px; padding: 10px 12px; border-radius: 12px 12px 6px 6px; border: 4px solid var(--inchiostro); cursor: pointer;
+  background: linear-gradient(#f0cc6a, #9a7a2a); font-family: inherit; font-weight: 800; color: var(--inchiostro); display: flex; flex-direction: column; align-items: center; }
+.bil-peso .bil-n { font-size: 1.3em; }
+.bil-peso.messo { transform: translateY(-8px); box-shadow: 0 8px 0 var(--oro); outline: 4px solid #fff8e6; }
+/* il colpo finale: 0,999… = 1 */
+.fm-uno { text-align: center; font-size: 3.4em; font-weight: 800; color: var(--oro); margin: 6px 0 12px; }

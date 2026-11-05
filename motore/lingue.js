@@ -5,6 +5,7 @@
    Nei testi si possono usare:
      {fr:3/4}   frazione in colonna (resta sempre nel verso giusto, anche in arabo)
      {n:3,5}    numero "blindato" da sinistra a destra
+     {per:16}   cifre del periodo, con la lineetta sopra (es. 2,1{per:6})
      *parola*   grassetto
      {nome}     valore passato dal gioco (per esempio il nome di un oggetto)
    ===================================================================== */
@@ -20,12 +21,14 @@ var Lingue = (function () {
 
   function formatta(s, param) {
     s = esc(s);
-    s = s.replace(/\{fr:(\d+)\/(\d+)\}/g,
-      '<span class="fr" dir="ltr"><span class="fr-n">$1</span><span class="fr-d">$2</span></span>');
-    s = s.replace(/\{n:([^}]+)\}/g, '<bdi dir="ltr" class="num">$1</bdi>');
+    // prima i valori passati dal gioco, così anche "{fr:{n}/{d}}" diventa una frazione in colonna
     s = s.replace(/\{(\w+)\}/g, function (m, k) {
       return param && param[k] != null ? param[k] : m;
     });
+    s = s.replace(/\{fr:(\d+)\/(\d+)\}/g,
+      '<span class="fr" dir="ltr"><span class="fr-n">$1</span><span class="fr-d">$2</span></span>');
+    s = s.replace(/\{n:([^}]+)\}/g, '<bdi dir="ltr" class="num">$1</bdi>');
+    s = s.replace(/\{per:(\d+)\}/g, '<span class="periodo">$1</span>');
     s = s.replace(/\*([^*]+)\*/g, "<b>$1</b>");
     return s;
   }

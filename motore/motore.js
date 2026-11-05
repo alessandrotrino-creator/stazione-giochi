@@ -169,7 +169,7 @@ var Motore = (function () {
       if (e.larghezza) d.style.width = e.larghezza + "px";
       if (e.altezza) d.style.height = e.altezza + "px";
       if (e.rotazione) d.style.transform = "rotate(" + e.rotazione + "deg)";
-      if (e.testo) { d.innerHTML = T(e.testo); d.setAttribute("dir", Lingue.info().dir); }
+      if (e.testo) { d.innerHTML = T(e.testo, e.param && e.param(api)); d.setAttribute("dir", Lingue.info().dir); }
       else d.innerHTML = e.svg;
       D.elementi.appendChild(d);
     });
@@ -434,19 +434,20 @@ var Motore = (function () {
     if (attesa && attesa()) ultimoAvanzamento = performance.now();
   }
 
-  function scegli(opzioni, titolo) {
+  /* opzioni: [{ testo: chiave, valore, param }]; il titolo può avere parametri (per esempio una frazione che cambia a ogni partita) */
+  function scegli(opzioni, titolo, param) {
     return new Promise(function (fine) {
-      sceltaCorrente = { opzioni: opzioni, titolo: titolo, fine: function (v) { sceltaCorrente = null; D.scelte.classList.remove("aperte"); fine(v); } };
+      sceltaCorrente = { opzioni: opzioni, titolo: titolo, param: param, fine: function (v) { sceltaCorrente = null; D.scelte.classList.remove("aperte"); fine(v); } };
       disegnaScelte();
     });
   }
   function disegnaScelte() {
     var s = sceltaCorrente;
     if (!s) { D.scelte.classList.remove("aperte"); return; }
-    D.scelte.innerHTML = (s.titolo ? '<div class="sc-titolo">' + T(s.titolo) + "</div>" : "");
+    D.scelte.innerHTML = (s.titolo ? '<div class="sc-titolo">' + T(s.titolo, s.param) + "</div>" : "");
     D.scelte.setAttribute("dir", Lingue.info().dir);
     s.opzioni.forEach(function (o, i) {
-      var b = el("button", "sc-opzione", '<span class="sc-n">' + (i + 1) + "</span>" + T(o.testo));
+      var b = el("button", "sc-opzione", '<span class="sc-n">' + (i + 1) + "</span>" + T(o.testo, o.param));
       b.addEventListener("click", function (e) { e.stopPropagation(); s.fine(o.valore); });
       D.scelte.appendChild(b);
     });

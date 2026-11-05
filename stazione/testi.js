@@ -31,7 +31,8 @@ Lingue.aggiungi("it", {
   "gioco.matematica.materia": "Matematica",
   "gioco.matematica.descr": "Un ascensore che viaggia nel tempo, una nonna scomparsa e un Conte che ruba alla storia tutti i numeri non tondi.",
   "cap.scienze.prova": "Stanza di prova",
-  "cap.scienze.01": "La notte delle etichette"
+  "cap.scienze.01": "La notte delle etichette",
+  "cap.matematica.01": "La virgola rubata"
 });
 
 Lingue.aggiungi("en", {
@@ -63,7 +64,8 @@ Lingue.aggiungi("en", {
   "gioco.matematica.materia": "Maths",
   "gioco.matematica.descr": "A lift that travels through time, a missing grandmother and a Count who steals every number that isn't round from history.",
   "cap.scienze.prova": "Test room",
-  "cap.scienze.01": "The Night of the Labels"
+  "cap.scienze.01": "The Night of the Labels",
+  "cap.matematica.01": "The Stolen Decimal Comma"
 });
 
 Lingue.aggiungi("fr", {
@@ -95,7 +97,8 @@ Lingue.aggiungi("fr", {
   "gioco.matematica.materia": "Mathématiques",
   "gioco.matematica.descr": "Un ascenseur qui voyage dans le temps, une grand-mère disparue et un Comte qui vole à l'Histoire tous les nombres qui ne sont pas ronds.",
   "cap.scienze.prova": "Salle d'essai",
-  "cap.scienze.01": "La nuit des étiquettes"
+  "cap.scienze.01": "La nuit des étiquettes",
+  "cap.matematica.01": "La virgule volée"
 });
 
 Lingue.aggiungi("ar", {
@@ -127,7 +130,8 @@ Lingue.aggiungi("ar", {
   "gioco.matematica.materia": "الرياضيات",
   "gioco.matematica.descr": "مصعد يسافر عبر الزمن، وجدّة مختفية، وكونت يسرق من التاريخ كل الأعداد غير الصحيحة.",
   "cap.scienze.prova": "غرفة التجربة",
-  "cap.scienze.01": "ليلة البطاقات"
+  "cap.scienze.01": "ليلة البطاقات",
+  "cap.matematica.01": "الفاصلة المسروقة"
 });
 
 Lingue.aggiungi("es", {
@@ -159,5 +163,6 @@ Lingue.aggiungi("es", {
   "gioco.matematica.materia": "Matemáticas",
   "gioco.matematica.descr": "Un ascensor que viaja en el tiempo, una abuela desaparecida y un Conde que le roba a la historia todos los números que no son redondos.",
   "cap.scienze.prova": "Sala de prueba",
-  "cap.scienze.01": "La noche de las etiquetas"
+  "cap.scienze.01": "La noche de las etiquetas",
+  "cap.matematica.01": "La coma robada"
 });

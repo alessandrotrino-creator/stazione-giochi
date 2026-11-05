@@ -8,12 +8,13 @@
   var C = Cap1;
 
   /* ---------- le casse di Etichetti e cosa contengono ---------- */
+  /* le casse NON stanno da sinistra a destra nell'ordine degli incavi della porta (si indovinerebbe senza ragionare) */
   var CASSE = [
-    { id: "c1", ogg: "stella", x: 918, y: 560, etichetta: "cassa.et.stella", rot: -6 },
-    { id: "c2", ogg: "farfalla", x: 1030, y: 566, etichetta: "cassa.et.ali", rot: 4 },
+    { id: "c1", ogg: "stella", x: 1086, y: 486, etichetta: "cassa.et.stella", rot: -6 },
+    { id: "c2", ogg: "farfalla", x: 1140, y: 572, etichetta: "cassa.et.ali", rot: 4 },
     { id: "c3", ogg: "passero", x: 972, y: 478, etichetta: "cassa.et.ali2", rot: -3 },
-    { id: "c4", ogg: "spugna", x: 1086, y: 486, etichetta: "cassa.et.buchi", rot: 5 },
-    { id: "c5", ogg: "pesce", x: 1140, y: 572, etichetta: "cassa.et.strisce", rot: -4 }
+    { id: "c4", ogg: "spugna", x: 918, y: 560, etichetta: "cassa.et.buchi", rot: 5 },
+    { id: "c5", ogg: "pesce", x: 1030, y: 566, etichetta: "cassa.et.strisce", rot: -4 }
   ];
   var VERTEBRATI = { passero: true, pesce: true };
   var INCAVI = [
