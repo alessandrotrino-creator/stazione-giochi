@@ -25,7 +25,11 @@ Piattaforma.gioco({
         "giochi/matematica/capitoli/01-decimali/stanze/spiaggia.js",
         "giochi/matematica/capitoli/01-decimali/stanze/mercato.js",
         "giochi/matematica/capitoli/01-decimali/stanze/finale.js",
-        "giochi/matematica/capitoli/01-decimali/testi/it.js"
+        "giochi/matematica/capitoli/01-decimali/testi/it.js",
+        "giochi/matematica/capitoli/01-decimali/testi/en.js",
+        "giochi/matematica/capitoli/01-decimali/testi/fr.js",
+        "giochi/matematica/capitoli/01-decimali/testi/es.js",
+        "giochi/matematica/capitoli/01-decimali/testi/ar.js"
       ],
       argomenti: ["frazioni decimali e numeri decimali", "frazioni non decimali: la divisione", "tipo di decimale dai fattori del denominatore", "numeri razionali", "troncamento e arrotondamento", "frazione generatrice di decimali limitati e periodici", "operazioni con i decimali (divisione, moltiplicazione, sottrazione, addizione, potenza)", "operazioni con i periodici passando per le frazioni", "0,999… = 1"],
       errori: {

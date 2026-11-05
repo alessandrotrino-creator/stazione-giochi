@@ -9,6 +9,7 @@
 var IMPOSTAZIONI_CASA = {
   segreto: "xyO9Zn1q7JEiyplB0ouP",
   parole: {
-    "scienze/cap01": "NTwLbAkv"
+    "scienze/cap01": "NTwLbAkv",
+    "matematica/cap01": "OTcbcAorYzh4Dgo="
   }
 };

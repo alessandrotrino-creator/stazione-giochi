@@ -12,7 +12,7 @@
   var CHILI_GRANDE = [2, 3, 4];                                                  // la forma grande del cartello: il prezzo al chilo si trova dividendo
   var PESI = [100, 100, 50, 25, 20, 10, 5, 5];                                 // in centesimi di chilo
   var BERSAGLI = [235, 185, 270, 145, 315];
-  var LATI = [5, 3, 4, 12];
+  var LATI = [5, 3, 4, 6];        // lati minori di 1: il testo dice che l'area viene più piccola del lato
 
   function dati(m) {
     var d = m.stato.flag.datiMercato;
