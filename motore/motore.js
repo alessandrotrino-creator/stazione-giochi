@@ -454,6 +454,63 @@ var Motore = (function () {
     D.scelte.classList.add("aperte");
   }
 
+  /* ---------------- tastierino numerico (risposte da scrivere, senza scelta multipla) ----------------
+     opz: { segno: tasto "−", virgola: tasto ",", max: cifre massime (8) }.
+     Restituisce il testo scritto ("−1763", "0,5"); il controllo lo fa il capitolo con api.numero(). */
+  var tastierinoCorrente = null;
+  function tastierino(titolo, param, opz) {
+    opz = opz || {};
+    return new Promise(function (fine) {
+      var t = { testo: "" };
+      t.premi = function (k) {
+        if (k === "ok") {
+          if (!/\d/.test(t.testo)) return;
+          tastierinoCorrente = null; chiudiPannello(); Suoni.effetto("pagina"); fine(t.testo); return;
+        }
+        if (k === "canc") t.testo = t.testo.slice(0, -1);
+        else if (k === "−") { if (!opz.segno) return; t.testo = t.testo.charAt(0) === "−" ? t.testo.slice(1) : "−" + t.testo; }
+        else if (k === ",") { if (!opz.virgola || t.testo.indexOf(",") >= 0) return; t.testo += /\d$/.test(t.testo) ? "," : "0,"; }
+        else if (/^\d$/.test(k)) { if (t.testo.replace(/\D/g, "").length >= (opz.max || 8)) return; t.testo += k; }
+        else return;
+        Suoni.effetto("clic");
+        disegnaPannello();
+      };
+      tastierinoCorrente = t;
+      apriPannello(function (p) {
+        var box = el("div", "tn-box");
+        box.appendChild(el("h2", "", T(titolo, param)));
+        box.appendChild(el("div", "tn-schermo num", t.testo || "&nbsp;"));
+        var g = el("div", "tn-tasti");
+        ["7", "8", "9", "4", "5", "6", "1", "2", "3", opz.segno ? "−" : "", "0", opz.virgola ? "," : ""].forEach(function (k) {
+          var b = el("button", "tn-tasto" + (k ? "" : " vuoto"), k || "&nbsp;");
+          if (k) b.addEventListener("click", function (e) { e.stopPropagation(); t.premi(k); });
+          g.appendChild(b);
+        });
+        var c = el("button", "tn-tasto canc", "⌫");
+        c.setAttribute("aria-label", Lingue.semplice("ui.cancella"));
+        c.addEventListener("click", function (e) { e.stopPropagation(); t.premi("canc"); });
+        var ok = el("button", "tn-tasto ok", T("ui.conferma"));
+        ok.addEventListener("click", function (e) { e.stopPropagation(); t.premi("ok"); });
+        g.appendChild(c); g.appendChild(ok);
+        box.appendChild(g);
+        // promemoria sempre visibile (per esempio anno di partenza e di arrivo), così non serve ricordarlo a memoria
+        if (opz.promemoria) box.appendChild(el("div", "tn-promemoria", T(opz.promemoria, param)));
+        // "Annulla": si esce senza rispondere (il capitolo riceve null)
+        if (opz.annullabile) {
+          var an = el("button", "pn-tasto tn-annulla", T("ui.annulla"));
+          an.addEventListener("click", function (e) { e.stopPropagation(); tastierinoCorrente = null; chiudiPannello(); fine(null); });
+          box.appendChild(an);
+        }
+        p.appendChild(box);
+      }, { chiudibile: false, aiuto: true });
+    });
+  }
+  /* "−1763" → −1763; "0,50" → 0,5 (così 0,50 e 0,5 valgono uguale) */
+  function numero(testo) {
+    var n = parseFloat(String(testo).replace("−", "-").replace(",", "."));
+    return isNaN(n) ? null : n;
+  }
+
   /* ---------------- inventario ---------------- */
   function disegnaInventario() {
     var box = D["inv-oggetti"];
@@ -506,7 +563,7 @@ var Motore = (function () {
 
   /* ---------------- pannelli ---------------- */
   function apriPannello(costruttore, opz) {
-    pannelloCorrente = { costruisci: costruttore, chiudibile: !opz || opz.chiudibile !== false };
+    pannelloCorrente = { costruisci: costruttore, chiudibile: !opz || opz.chiudibile !== false, aiuto: !!(opz && opz.aiuto) };
     disegnaPannello();
     D.velo.classList.add("aperto"); D.pannello.classList.add("aperto");
   }
@@ -515,13 +572,31 @@ var Motore = (function () {
     D.pannello.setAttribute("dir", Lingue.info().dir);
     D.pannello.innerHTML = "";
     pannelloCorrente.costruisci(D.pannello);
+    // nei pannelli-domanda (tastierino, valigie, scala…) c'è sempre il pulsante Aiuto: nessuno resta bloccato
+    if (pannelloCorrente.aiuto && cap.aiuti) {
+      var a = el("button", "pn-aiuto", "💡 " + T("ui.aiuto"));
+      a.addEventListener("click", function (e) { e.stopPropagation(); chiediAiuto(); });
+      D.pannello.insertBefore(a, D.pannello.firstChild);
+    }
     if (pannelloCorrente.chiudibile) {
       var x = el("button", "pn-chiudi", T("ui.chiudi"));
       x.addEventListener("click", chiudiPannello);
       D.pannello.appendChild(x);
     }
   }
+  /* un aiuto mostrato come nuvoletta sopra tutto (durante una domanda o una scelta): non interrompe niente */
+  function nuvolaAiuto(chi, chiave, param) {
+    var vecchia = D.palco.querySelector(".aiuto-nuvola");
+    if (vecchia) vecchia.remove();
+    var pers = cap.personaggi[chi] || {};
+    var n = el("div", "aiuto-nuvola", "<b>💡 " + (pers.nome ? T(pers.nome) : "") + "</b> " + T(chiave, param));
+    n.setAttribute("dir", Lingue.info().dir);
+    n.addEventListener("click", function (e) { e.stopPropagation(); n.remove(); });
+    D.palco.appendChild(n);
+    Suoni.effetto("pagina");
+  }
   function chiudiPannello() {
+    var nv = D.palco.querySelector(".aiuto-nuvola"); if (nv) nv.remove();
     pannelloCorrente = null;
     D.velo.classList.remove("aperto"); D.pannello.classList.remove("aperto");
   }
@@ -598,7 +673,7 @@ var Motore = (function () {
       apriPannello(function (q) {
         q.appendChild(el("h2", "", T("ui.confermaRicomincia")));
         var si = el("button", "pn-pericolo", T("ui.si")), no = el("button", "pn-tasto", T("ui.no"));
-        si.addEventListener("click", function () { Salvataggio.azzera(cap.gioco, classe, cap.id); location.reload(); });
+        si.addEventListener("click", function () { Salvataggio.azzera(cap.gioco, chiavePartita(), cap.id); location.reload(); });
         no.addEventListener("click", chiudiPannello);
         q.appendChild(si); q.appendChild(no);
       });
@@ -641,7 +716,7 @@ var Motore = (function () {
       st.addEventListener("click", function () { Piattaforma.tornaAllaStazione(); });
       p.appendChild(st);
       var r = el("button", "pn-tasto", T("ui.ricomincia"));
-      r.addEventListener("click", function () { Salvataggio.azzera(cap.gioco, classe, cap.id); location.reload(); });
+      r.addEventListener("click", function () { Salvataggio.azzera(cap.gioco, chiavePartita(), cap.id); location.reload(); });
       p.appendChild(r);
     };
   }
@@ -653,10 +728,10 @@ var Motore = (function () {
     if (a === "audio") return cambiaAudio();
     if (a === "impostazioni") return apriPannello(pannelloImpostazioni);
     if (a === "lente") return lente();
+    if (a === "aiuto") return chiediAiuto();                      // l'aiuto si può chiedere sempre, anche durante una domanda
     if (attesa || occupato || sceltaCorrente) return;          // questi solo quando non c'è una scenetta
     if (a === "quaderno") return apriPannello(pannelloQuaderno);
     if (a === "zaino") { D.ui.classList.toggle("zaino-aperto"); disegnaInventario(); return; }
-    if (a === "aiuto") return chiediAiuto();
   }
 
   function lente() {
@@ -665,14 +740,19 @@ var Motore = (function () {
     lente.t = setTimeout(function () { D.hotspot.classList.remove("lente"); }, 2200);
   }
 
+  /* aiuti a gradini: se il capitolo ha indicato un aiuto per la domanda in corso (api.aiutoQui) vale quello,
+     altrimenti quello della stanza. Durante una domanda o una scelta l'aiuto compare come nuvoletta.
+     Ogni aiuto chiesto si conta: finisce nel riepilogo e nel codice di fine capitolo. */
+  var aiutoContesto = null;
   function chiediAiuto() {
-    if (!cap.aiuti) return;
-    var a = cap.aiuti(api);
+    var a = aiutoContesto || (cap.aiuti && cap.aiuti(api));
     if (!a) return;
     var liv = livelloAiuto[a.id] || 0;
     livelloAiuto[a.id] = liv + 1;
-    stato.aiuti = (stato.aiuti || 0) + 1;            // quanti aiuti chiesti: finiscono nel codice di fine capitolo (a casa)
-    esegui(function (m) { return m.dice(a.chi, a.chiavi[Math.min(liv, a.chiavi.length - 1)]); });
+    stato.aiuti = (stato.aiuti || 0) + 1;
+    var chiave = a.chiavi[Math.min(liv, a.chiavi.length - 1)];
+    if (occupato || pannelloCorrente || sceltaCorrente || attesa) { nuvolaAiuto(a.chi, chiave, a.param); salva(); return; }
+    esegui(function (m) { return m.dice(a.chi, chiave, a.param); });
   }
 
   function cambiaAudio() {
@@ -681,6 +761,11 @@ var Motore = (function () {
   }
 
   function tastiera(e) {
+    if (tastierinoCorrente) {
+      var k = e.key === "Enter" ? "ok" : e.key === "Backspace" ? "canc" : e.key === "-" ? "−" : e.key === "." ? "," : e.key;
+      if (/^(\d|ok|canc|−|,)$/.test(k)) { e.preventDefault(); tastierinoCorrente.premi(k); }
+      return;
+    }
     if (e.key === "Escape") { if (pannelloCorrente && pannelloCorrente.chiudibile) chiudiPannello(); else deseleziona(); nascondiVentaglio(); }
     if ((e.key === " " || e.key === "Enter") && attesa && !pannelloCorrente) { e.preventDefault(); avanza(); }
     if (sceltaCorrente && /^[1-9]$/.test(e.key)) {
@@ -727,11 +812,20 @@ var Motore = (function () {
   function salvaImp() { Salvataggio.salvaImpostazioni(imp); }
 
   /* ---------------- salvataggio ---------------- */
+  /* la partita salvata: in classe, una per biglietto di classe; A CASA, una per classe + numero di registro,
+     così due studenti che usano lo stesso dispositivo non mescolano partita, errori, aiuti e codice */
+  function chiavePartita() {
+    if (window.Casa && Casa.attiva()) {
+      var g = Casa.giocatore();
+      if (g && g.classe === classe && g.numero) return classe + "-n" + g.numero;
+    }
+    return classe;
+  }
   function salva() {
     if (!stato || occupato) return;
     var p = protagonista();
     if (p) stato.posizione = { x: Math.round(p.x), y: Math.round(p.y), dir: p.dir, vista: p.vista };
-    if (Salvataggio.salva(cap.gioco, classe, cap.id, stato)) {
+    if (Salvataggio.salva(cap.gioco, chiavePartita(), cap.id, stato)) {
       D.avviso.innerHTML = T("ui.salvato");
       D.avviso.classList.remove("mostra"); void D.avviso.offsetWidth; D.avviso.classList.add("mostra");
     }
@@ -746,6 +840,10 @@ var Motore = (function () {
     dice: dice,
     pensa: function (k, p) { return dice(cap.protagonista, k, p); },
     scegli: scegli,
+    tastierino: tastierino,
+    /* aiuti specifici per la domanda in corso: { id, chi, chiavi: [dal più vago alla soluzione], param }; null per toglierli */
+    aiutoQui: function (a) { aiutoContesto = a; },
+    numero: numero,
     cammina: function (x, y, chi) { return cammina(chi || cap.protagonista, x, y); },
     guarda: function (dir, chi) { var a = attori[chi || cap.protagonista]; if (a) { a.dir = dir; impostaVista(a, "profilo"); posiziona(a); } },
     vista: function (nome, chi) { var a = attori[chi || cap.protagonista]; if (a) impostaVista(a, nome); },
@@ -807,7 +905,9 @@ var Motore = (function () {
     },
     /* apre un pannello costruito dal capitolo (per esempio il ripasso finale) */
     pannello: function (costruttore, opz) { return new Promise(function (fatto) {
-      apriPannello(function (p) { costruttore(p, function () { chiudiPannello(); fatto(); }); }, opz);
+      var o = opz || {};
+      if (o.chiudibile === false && o.aiuto !== false) o.aiuto = true;      // le domande hanno sempre il pulsante Aiuto
+      apriPannello(function (p) { costruttore(p, function () { chiudiPannello(); fatto(); }); }, o);
     }); },
     get stato() { return stato; }
   };
@@ -833,7 +933,12 @@ var Motore = (function () {
       if (opz.gioco) cap.gioco = opz.gioco;
       costruisci();
       Lingue.imposta(imp.lingua || "it");
-      var salvato = Salvataggio.carica(cap.gioco, classe, cap.id);
+      var salvato = Salvataggio.carica(cap.gioco, chiavePartita(), cap.id);
+      // a casa: una partita salvata con il sistema vecchio (solo classe) passa una volta sola al numero di registro
+      if (!salvato && chiavePartita() !== classe) {
+        salvato = Salvataggio.carica(cap.gioco, classe, cap.id);
+        if (salvato) { Salvataggio.salva(cap.gioco, chiavePartita(), cap.id, salvato); Salvataggio.azzera(cap.gioco, classe, cap.id); }
+      }
       stato = salvato && salvato.capitolo === cap.id && salvato.versione === (cap.versione || 1) ? salvato : statoNuovo();
       var pr = Salvataggio.progressi(cap.gioco, classe);
       pr.ultimo = cap.id; Salvataggio.salvaProgressi(cap.gioco, classe, pr);
@@ -861,7 +966,7 @@ var Motore = (function () {
       }
     },
     /* per le prove automatiche: lo stato attuale e le frasi mancanti */
-    _debug: function () { return { stato: stato, occupato: occupato, attesa: !!attesa, mancanti: Lingue.mancanti() }; },
+    _debug: function () { return { stato: stato, occupato: occupato, attesa: !!attesa, mancanti: Lingue.mancanti(), scelta: sceltaCorrente }; },
     _avanza: avanza,
     _api: function () { return api; },
     _haStanza: function (n) { return !!(cap && cap.stanze[n]); }

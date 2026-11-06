@@ -752,19 +752,19 @@ Lingue.aggiungi("en", {
   "hs.biglietto": "Ticket",
   "fm.biglietto.guarda": "A paper ticket, dropped by the Count as he ran away.",
   "fm.biglietto.parla": "Ticket, where do you lead? … Better read it.",
-  "fm.b.1": "A train ticket: “Platform 3”. The destination has been crossed out with a red marker.",
+  "fm.b.1": "A train ticket: “Platform 4”. The destination has been crossed out with a red marker.",
   "fm.b.2": "And stuck on top there's a pink label, handwritten: “To the Baron, with esteem. The Count”. A baron?",
-  "fm.b.3": "Platform 3? There's no station in our building. And yet… I can hear a train whistle, far, far away.",
+  "fm.b.3": "Platform 4? There's no station in our building. And yet… I can hear a train whistle, far, far away.",
   "fm.radio.1": "Leo… can you hear me? You've been brilliant. But listen…",
   "fm.radio.2": "Watch out for numbers that never end… and never repeat. The Count is looking for them… and he's not alone…",
   "fm.l.3": "Numbers that never end and never repeat? A baron? A train? Grandma, where on earth are you?",
   "fm.continua": "To be continued…",
   "fm.prossimo": "On the next journey: the numbers that never end and never repeat.",
   "ogg.biglietto": "The Count's ticket",
-  "ogg.biglietto.d": "A train ticket for Platform 3, with the destination crossed out and a pink label: “To the Baron, with esteem. The Count”.",
+  "ogg.biglietto.d": "A train ticket for Platform 4, with the destination crossed out and a pink label: “To the Baron, with esteem. The Count”.",
   "biglietto.altro": "The ticket is a clue. Better keep it.",
   "m1.uno": "Recurring decimals and fractions: 0,{per:2} = {fr:2/9}; 1,{per:3} = {fr:12/9}. And above all: 0,{per:9} = 1.",
-  "m1.biglietto": "The Count dropped a *ticket for Platform 3* with a pink label: “To the Baron, with esteem”. Who is the Baron?",
+  "m1.biglietto": "The Count dropped a *ticket for Platform 4* with a pink label: “To the Baron, with esteem”. Who is the Baron?",
   "aiuto6.d1": "The Count is throwing recurring decimals at you: turn them into fractions with the rule from the Netherlands.",
   "aiuto6.d2": "Numerator: number without the comma minus the non-repeating part. Denominator: a 9 for each digit of the period, a 0 for each digit of the pre-period.",
   "aiuto6.d3": "Example: 0,1 with the 6 recurring → (16 − 1) / 90 = 15/90.",
@@ -812,7 +812,7 @@ Lingue.aggiungi("en", {
   "mvi.12": "In 1427 Ulugh Beg's observatory in Samarkand wasn't finished yet.",
   "mvi.12.spiega": "True: it was completed around 1428.",
   "mat1.fine.titolo": "End of chapter 1!",
-  "mat1.fine.testo": "The comma is back where it belongs: prices, thermometers and elevators work again. But who is the Baron? Where does Platform 3 lead? And where is Grandma? We'll find out on the next journey…"
+  "mat1.fine.testo": "The comma is back where it belongs: prices, thermometers and elevators work again. But who is the Baron? Where does Platform 4 lead? And where is Grandma? We'll find out on the next journey…"
 });
 
 /* ---------- mercato: la divisione ---------- */

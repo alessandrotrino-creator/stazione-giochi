@@ -16,7 +16,7 @@
    - "braccio" (unità di misura del mercante) = "coudée"; "asta graduata" = "règle graduée";
      "tavoletta di polvere" = "tablette à poussière"; "calamo" = "calame"; "gabbiano" = "mouette".
    - "taccuino" (di Stevino e della nonna) = "calepin", per non confonderlo con il "Carnet" (= Quaderno) dell'interfaccia.
-   - "vano dell'ascensore" = "cage (d'ascenseur)"; "Binario 3" = "Voie 3"; "Barone" = "Baron".
+   - "vano dell'ascensore" = "cage (d'ascenseur)"; "Binario 4" = "Voie 4"; "Barone" = "Baron".
    - Battute adattate: «otto e mezzo» = «huit heures et demie» («Je n'arrive pas à dire « demie »»);
      «Io non viaggio verso un circa!» = «Je ne voyage pas vers un “à peu près” !»;
      «Setaccio, setaccio delle mie brame» = «Tamis, mon beau tamis» (da «Miroir, mon beau miroir»);
@@ -741,19 +741,19 @@ Lingue.aggiungi("fr", {
   "hs.biglietto": "Billet",
   "fm.biglietto.guarda": "Un billet en papier, tombé de la poche du Comte pendant qu'il s'enfuyait.",
   "fm.biglietto.parla": "Billet, où mènes-tu ? … Je vais plutôt le lire.",
-  "fm.b.1": "Un billet de train : « Voie 3 ». La destination est barrée au feutre rouge.",
+  "fm.b.1": "Un billet de train : « Voie 4 ». La destination est barrée au feutre rouge.",
   "fm.b.2": "Et collée dessus, il y a une étiquette rose, écrite à la main : « Au Baron, avec mon estime. Le Comte ». Un baron ?",
-  "fm.b.3": "Voie 3 ? Dans notre immeuble, il n'y a aucune gare. Et pourtant… j'entends un sifflet de train, très loin.",
+  "fm.b.3": "Voie 4 ? Dans notre immeuble, il n'y a aucune gare. Et pourtant… j'entends un sifflet de train, très loin.",
   "fm.radio.1": "Leo… tu m'entends ? Tu as été formidable. Mais écoute…",
   "fm.radio.2": "Attention aux nombres qui ne finissent jamais… et qui ne se répètent jamais. Le Comte les cherche… et il n'est pas seul…",
   "fm.l.3": "Des nombres qui ne finissent pas et ne se répètent pas ? Un baron ? Un train ? Mamie, mais où es-tu passée ?",
   "fm.continua": "À suivre…",
   "fm.prossimo": "Au prochain voyage : les nombres qui ne finissent jamais et ne se répètent jamais.",
   "ogg.biglietto": "Billet du Comte",
-  "ogg.biglietto.d": "Un billet de train pour la Voie 3, avec la destination barrée et une étiquette rose : « Au Baron, avec mon estime. Le Comte ».",
+  "ogg.biglietto.d": "Un billet de train pour la Voie 4, avec la destination barrée et une étiquette rose : « Au Baron, avec mon estime. Le Comte ».",
   "biglietto.altro": "Le billet est un indice. Mieux vaut le garder.",
   "m1.uno": "Périodiques et fractions : 0,{per:2} = {fr:2/9} ; 1,{per:3} = {fr:12/9}. Et surtout : 0,{per:9} = 1.",
-  "m1.biglietto": "Le Comte a perdu un *billet pour la Voie 3* avec une étiquette rose : « Au Baron, avec mon estime ». Qui est le Baron ?",
+  "m1.biglietto": "Le Comte a perdu un *billet pour la Voie 4* avec une étiquette rose : « Au Baron, avec mon estime ». Qui est le Baron ?",
   "aiuto6.d1": "Le Comte te lance des périodiques : transforme-les en fractions avec la règle de Hollande.",
   "aiuto6.d2": "Numérateur : le nombre sans virgule moins la partie non périodique. Dénominateur : un 9 pour chaque chiffre de la période, un 0 pour chaque chiffre de l'antépériode.",
   "aiuto6.d3": "Exemple : 0,1 avec le 6 périodique → (16 − 1) / 90 = 15/90.",
@@ -801,7 +801,7 @@ Lingue.aggiungi("fr", {
   "mvi.12": "En 1427, l'observatoire d'Ulugh Beg à Samarcande n'était pas encore terminé.",
   "mvi.12.spiega": "Vrai : il a été achevé vers 1428.",
   "mat1.fine.titolo": "Fin du chapitre 1 !",
-  "mat1.fine.testo": "La virgule est revenue à sa place : les prix, les thermomètres et les ascenseurs fonctionnent de nouveau. Mais qui est le Baron ? Où mène la Voie 3 ? Et où est Mamie ? Nous le découvrirons au prochain voyage…"
+  "mat1.fine.testo": "La virgule est revenue à sa place : les prix, les thermomètres et les ascenseurs fonctionnent de nouveau. Mais qui est le Baron ? Où mène la Voie 4 ? Et où est Mamie ? Nous le découvrirons au prochain voyage…"
 });
 
 /* ---------- marché : la division ---------- */

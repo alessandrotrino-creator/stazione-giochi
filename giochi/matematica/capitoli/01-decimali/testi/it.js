@@ -715,19 +715,19 @@ Lingue.aggiungi("it", {
   "hs.biglietto": "Biglietto",
   "fm.biglietto.guarda": "Un biglietto di carta, caduto al Conte mentre scappava.",
   "fm.biglietto.parla": "Biglietto, dove porti? … Lo leggo, è meglio.",
-  "fm.b.1": "Un biglietto del treno: «Binario 3». La destinazione è cancellata con un pennarello rosso.",
+  "fm.b.1": "Un biglietto del treno: «Binario 4». La destinazione è cancellata con un pennarello rosso.",
   "fm.b.2": "E incollata sopra c'è un'etichetta rosa, scritta a mano: «Al Barone, con stima. Il Conte». Un barone?",
-  "fm.b.3": "Binario 3? Nel nostro palazzo non c'è nessuna stazione. Eppure… sento un fischio di treno, lontano lontano.",
+  "fm.b.3": "Binario 4? Nel nostro palazzo non c'è nessuna stazione. Eppure… sento un fischio di treno, lontano lontano.",
   "fm.radio.1": "Leo… mi senti? Sei stato bravissimo. Ma ascolta…",
   "fm.radio.2": "Attento ai numeri che non finiscono mai… e non si ripetono mai. Il Conte li sta cercando… e non è solo…",
   "fm.l.3": "Numeri che non finiscono e non si ripetono? Un barone? Un treno? Nonna, ma dove sei finita?",
   "fm.continua": "Continua…",
   "fm.prossimo": "Nel prossimo viaggio: i numeri che non finiscono mai e non si ripetono mai.",
   "ogg.biglietto": "Biglietto del Conte",
-  "ogg.biglietto.d": "Un biglietto del treno per il Binario 3, con la destinazione cancellata e un'etichetta rosa: «Al Barone, con stima. Il Conte».",
+  "ogg.biglietto.d": "Un biglietto del treno per il Binario 4, con la destinazione cancellata e un'etichetta rosa: «Al Barone, con stima. Il Conte».",
   "biglietto.altro": "Il biglietto è un indizio. Meglio conservarlo.",
   "m1.uno": "Periodici e frazioni: 0,{per:2} = {fr:2/9}; 1,{per:3} = {fr:12/9}. E soprattutto: 0,{per:9} = 1.",
-  "m1.biglietto": "Il Conte ha perso un *biglietto per il Binario 3* con un'etichetta rosa: «Al Barone, con stima». Chi è il Barone?",
+  "m1.biglietto": "Il Conte ha perso un *biglietto per il Binario 4* con un'etichetta rosa: «Al Barone, con stima». Chi è il Barone?",
   "aiuto6.d1": "Il Conte ti lancia dei periodici: trasformali in frazione con la regola dell'Olanda.",
   "aiuto6.d2": "Numeratore: numero senza virgola meno la parte non periodica. Denominatore: un 9 per ogni cifra del periodo, uno 0 per ogni cifra dell'antiperiodo.",
   "aiuto6.d3": "Esempio: 0,1 con il 6 periodico → (16 − 1) / 90 = 15/90.",
@@ -775,7 +775,7 @@ Lingue.aggiungi("it", {
   "mvi.12": "Nel 1427 l'osservatorio di Ulugh Beg a Samarcanda non era ancora finito.",
   "mvi.12.spiega": "Vero: fu completato intorno al 1428.",
   "mat1.fine.titolo": "Fine del capitolo 1!",
-  "mat1.fine.testo": "La virgola è tornata al suo posto: prezzi, termometri e ascensori funzionano di nuovo. Ma chi è il Barone? Dove porta il Binario 3? E dov'è la nonna? Lo scopriremo nel prossimo viaggio…"
+  "mat1.fine.testo": "La virgola è tornata al suo posto: prezzi, termometri e ascensori funzionano di nuovo. Ma chi è il Barone? Dove porta il Binario 4? E dov'è la nonna? Lo scopriremo nel prossimo viaggio…"
 });
 
 /* ---------- mercato: la divisione ---------- */

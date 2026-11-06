@@ -3,7 +3,7 @@
    «Duello nel vano dell'ascensore»: il Conte lancia calcoli con i periodici,
    Leo li smonta trasformandoli in frazioni. Colpo finale: 0,999… = 1.
    Poi: la virgola torna, il Conte scappa e lascia cadere un biglietto misterioso
-   (Binario 3, con un'etichetta rosa: un filo verso gli altri treni), la radio della nonna,
+   (Binario 4, con un'etichetta rosa: un filo verso gli altri treni), la radio della nonna,
    ripasso, «Vero o inventato?», fine del capitolo.
    ===================================================================== */
 (function () {
@@ -62,7 +62,7 @@
     m.flag("finaleFatto", true);
   }
 
-  /* il biglietto caduto al Conte: Binario 3, e un'etichetta rosa incollata sopra */
+  /* il biglietto caduto al Conte: Binario 4, e un'etichetta rosa incollata sopra */
   async function biglietto(m) {
     m.flag("bigliettoPreso", true);
     m.prendi("biglietto");

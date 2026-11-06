@@ -46,6 +46,15 @@ var Piattaforma = (function () {
     gioco: function (def) { giochi[def.id] = def; if (ordine.indexOf(def.id) < 0) ordine.push(def.id); },
     giochi: function () { return ordine.map(function (id) { return giochi[id]; }); },
     trova: function (id) { return giochi[id]; },
+    // ogni anno ha il suo treno: "gioco.<id>.titolo.<anno>"; se manca (storia non ancora scritta) si vede solo la materia
+    titolo: function (g, anno) {
+      var k = g.titolo + "." + anno;
+      return Lingue.esiste(k) ? k : g.materia;
+    },
+    descrizione: function (g, anno) {
+      var k = g.descrizione + "." + anno;
+      return Lingue.esiste(k) ? k : g.descrizione;
+    },
     capitolo: function (gioco, id) {
       var g = giochi[gioco];
       return g ? (g.capitoli || []).filter(function (c) { return c.id === id; })[0] : null;
@@ -98,17 +107,30 @@ var Piattaforma = (function () {
         Salvataggio.salvaClassi(CLASSI_INIZIALI.map(function (c, i) {
           return { id: "c" + (Date.now() + i).toString(36), nome: c.nome, anno: c.anno || 2, soprannome: c.soprannome || "" };
         }));
-        try { localStorage.setItem("stazione-dei-giochi:classiCreate", "1"); } catch (e) {}
+        try { localStorage.setItem("stazione-dei-giochi:classiCreate", "1"); localStorage.setItem("stazione-dei-giochi:classiVersione", String(window.VERSIONE_CLASSI || 1)); } catch (e) {}
       }
+      // computer già usati: se scuola.js ha classi nuove (versione più alta), si aggiungono quelle che mancano, una volta sola
+      try {
+        var ver = +localStorage.getItem("stazione-dei-giochi:classiVersione") || 1;
+        if (window.CLASSI_INIZIALI && (window.VERSIONE_CLASSI || 1) > ver) {
+          var ora = Salvataggio.classi(), nomi = ora.map(function (c) { return String(c.nome || "").toUpperCase().replace(/\s/g, ""); });
+          CLASSI_INIZIALI.forEach(function (c, i) {
+            if (nomi.indexOf(c.nome.toUpperCase()) < 0) ora.push({ id: "c" + (Date.now() + 100 + i).toString(36), nome: c.nome, anno: c.anno || 2, soprannome: "" });
+          });
+          Salvataggio.salvaClassi(ora);
+          localStorage.setItem("stazione-dei-giochi:classiVersione", String(VERSIONE_CLASSI));
+        }
+      } catch (e) {}
       var imp = Salvataggio.impostazioni();
       Lingue.imposta(imp.lingua || "it");
       if (window.Casa && Casa.attiva()) Lingue.variante("casa");
       avvisoGira();
       var o = leggiIndirizzo(), g = giochi[o.gioco], c = g && api.capitolo(o.gioco, o.capitolo);
       if (!g || !c || !o.classe || !api.sbloccato(o.classe, o.gioco, o.capitolo)) { Stazione.mostra(); return; }
-      document.title = Lingue.semplice(g.titolo) + " · " + api.nomeClasse(o.classe);
+      var tit = api.titolo(g, c.anno);
+      document.title = Lingue.semplice(tit) + " · " + api.nomeClasse(o.classe);
       caricaFile((g.grafica || []).concat(c.file)).then(function () {
-        Motore.avvia({ gioco: g.id, capitolo: c.id, classe: o.classe, nomeClasse: api.nomeClasse(o.classe), titolo: g.titolo, durata: c.durata });
+        Motore.avvia({ gioco: g.id, capitolo: c.id, classe: o.classe, nomeClasse: api.nomeClasse(o.classe), titolo: tit, durata: c.durata });
       }).catch(function (err) {
         document.body.innerHTML = '<p style="color:#fff;font:24px sans-serif;padding:40px">' + err.message +
           '<br><br><a style="color:#ffd36b" href="' + location.pathname + '">↩ Stazione</a></p>';

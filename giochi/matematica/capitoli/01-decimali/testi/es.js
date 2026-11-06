@@ -17,7 +17,7 @@
      "Rotondina" = "Redondito" (maschile, perché "queso" è maschile); resto (soldi) = "cambio" (in Spagna anche "la vuelta", in America Latina "el vuelto"); "attento al prestito" = "cuidado al pedir prestado" (in Spagna si dice spesso "llevarse"); "Muahaha" = "Muajaja"; "Etciù" = "¡Achís!"; principe Maurizio = "príncipe Mauricio".
      Libri: «La decima» = «La décima» (in spagnolo è anche un tipo di strofa: da valutare «El décimo» o il titolo originale «De Thiende»);
      «Chiave dell'aritmetica» = «Llave de la aritmética».
-   - Il Barone: "Barón" (coerente con "Barón Etiquetti" di Scienze). "Binario 3" = "Andén 3".
+   - Il Barone: "Barón" (coerente con "Barón Etiquetti" di Scienze). "Binario 4" = "Andén 4".
    - Oggetti: occhiali = "anteojos" (in Spagna si dice più spesso "gafas"); setaccio = "tamiz"; vasca = "estanque"; lanterna = "farol";
      pesetti = "pesas" ("caja de las pesas"); pesa pubblica = "báscula pública"; bilancia = "balanza"; forma di formaggio = "queso"
      (la forma tonda = "el queso redondo"); piastrella = "baldosa"; carro a vela = "carro de vela"; gabbiano = "gaviota" (femminile!).
@@ -744,19 +744,19 @@ Lingue.aggiungi("es", {
   "hs.biglietto": "Billete",
   "fm.biglietto.guarda": "Un billete de papel, que se le cayó al Conde mientras escapaba.",
   "fm.biglietto.parla": "Billete, ¿adónde llevas? … Mejor lo leo.",
-  "fm.b.1": "Un billete de tren: «Andén 3». El destino está tachado con rotulador rojo.",
+  "fm.b.1": "Un billete de tren: «Andén 4». El destino está tachado con rotulador rojo.",
   "fm.b.2": "Y encima tiene pegada una etiqueta rosa, escrita a mano: «Al Barón, con estima. El Conde». ¿Un barón?",
-  "fm.b.3": "¿Andén 3? En nuestro edificio no hay ninguna estación. Y sin embargo… oigo un silbato de tren, muy, muy lejos.",
+  "fm.b.3": "¿Andén 4? En nuestro edificio no hay ninguna estación. Y sin embargo… oigo un silbato de tren, muy, muy lejos.",
   "fm.radio.1": "Leo… ¿me oyes? Lo hiciste muy bien. Pero escucha…",
   "fm.radio.2": "Cuidado con los números que nunca terminan… y nunca se repiten. El Conde los está buscando… y no está solo…",
   "fm.l.3": "¿Números que no terminan y no se repiten? ¿Un barón? ¿Un tren? Abuela, ¿pero dónde te metiste?",
   "fm.continua": "Continuará…",
   "fm.prossimo": "En el próximo viaje: los números que nunca terminan y nunca se repiten.",
   "ogg.biglietto": "Billete del Conde",
-  "ogg.biglietto.d": "Un billete de tren para el Andén 3, con el destino tachado y una etiqueta rosa: «Al Barón, con estima. El Conde».",
+  "ogg.biglietto.d": "Un billete de tren para el Andén 4, con el destino tachado y una etiqueta rosa: «Al Barón, con estima. El Conde».",
   "biglietto.altro": "El billete es una pista. Mejor guardarlo.",
   "m1.uno": "Periódicos y fracciones: 0,{per:2} = {fr:2/9}; 1,{per:3} = {fr:12/9}. Y sobre todo: 0,{per:9} = 1.",
-  "m1.biglietto": "El Conde perdió un *billete para el Andén 3* con una etiqueta rosa: «Al Barón, con estima». ¿Quién es el Barón?",
+  "m1.biglietto": "El Conde perdió un *billete para el Andén 4* con una etiqueta rosa: «Al Barón, con estima». ¿Quién es el Barón?",
   "aiuto6.d1": "El Conde te lanza periódicos: conviértelos en fracción con la regla de Holanda.",
   "aiuto6.d2": "Numerador: número sin coma menos la parte no periódica. Denominador: un 9 por cada cifra del período, un 0 por cada cifra del anteperíodo.",
   "aiuto6.d3": "Ejemplo: 0,1 con el 6 periódico → (16 − 1) / 90 = 15/90.",
@@ -804,7 +804,7 @@ Lingue.aggiungi("es", {
   "mvi.12": "En 1427 el observatorio de Ulugh Beg en Samarcanda todavía no estaba terminado.",
   "mvi.12.spiega": "Verdadero: se terminó hacia 1428.",
   "mat1.fine.titolo": "¡Fin del capítulo 1!",
-  "mat1.fine.testo": "La coma ha vuelto a su sitio: precios, termómetros y ascensores funcionan de nuevo. Pero ¿quién es el Barón? ¿Adónde lleva el Andén 3? ¿Y dónde está la abuela? Lo descubriremos en el próximo viaje…"
+  "mat1.fine.testo": "La coma ha vuelto a su sitio: precios, termómetros y ascensores funcionan de nuevo. Pero ¿quién es el Barón? ¿Adónde lleva el Andén 4? ¿Y dónde está la abuela? Lo descubriremos en el próximo viaje…"
 });
 
 /* ---------- mercado: la división ---------- */
