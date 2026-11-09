@@ -6,7 +6,7 @@ Lingue.aggiungi("it", {
   "nome.narratore": "Narratore",
 
   "t1.titolo": "Capitolo 1 · Sotto zero",
-  "t1.sottotitolo": "Contrattempo! · Classi terze",
+  "t1.sottotitolo": "I simboli rubati · Classi terze",
   "t1.intro.1": "Stazione dei giochi, Binario 8. È notte, nevica, e sul binario è comparso un treno che nessuno ha mai visto arrivare.",
   "t1.intro.2": "Un vagone vuoto, i finestrini ghiacciati, un calamaio che… russa? Da detective, questo si chiama «indizio».",
   "t1.intro.3": "Buonasera, ragazzina. Permetti che mi presenti: Madama Parolona. Io non sopporto i simboli: sono corti, freddi e maleducati.",
