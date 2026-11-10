@@ -2,6 +2,7 @@
    SALVATAGGIO: tutto resta nel browser di questo computer, nessun dato esce.
    - una partita per ogni gioco, classe e capitolo
    - l'elenco delle classi (i "biglietti"), i capitoli sbloccati, le impostazioni
+   - i codici di casa verificati dal docente
    - la copia di sicurezza su file (da salvare su chiavetta) e il suo ripristino
    ===================================================================== */
 var Salvataggio = (function () {
@@ -64,6 +65,11 @@ var Salvataggio = (function () {
     /* dati del docente: codice (in forma non leggibile) e data dell'ultima copia di sicurezza */
     docente: function () { return leggi("docente", { codice: null, ultimaCopia: null }); },
     salvaDocente: function (d) { return scrivi("docente", d); },
+
+    /* codici di casa verificati dal docente (solo numeri di registro, nessun nome):
+       { idClasse: { "gioco/capitolo": { numero: { codice, formato, errori, aiutiOggetti, aiutiDomande, aiuti, massimo, data, classe } } } } */
+    codiciCasa: function () { return leggi("codiciCasa", {}); },
+    salvaCodiciCasa: function (c) { return scrivi("codiciCasa", c); },
 
     /* impostazioni comuni a tutti i giochi */
     impostazioni: function () {

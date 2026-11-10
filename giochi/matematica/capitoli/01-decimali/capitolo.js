@@ -55,15 +55,23 @@ var Mat1 = {
   },
   a_caso: function (l) { return l[Math.floor(Math.random() * l.length)]; },
 
-  /* una scelta ripetuta finché non si trova la risposta giusta; ogni errore ha la sua spiegazione */
-  finoAlGiusto: async function (m, titolo, param, opzioni, spiega, errore) {
-    for (;;) {
-      var v = await m.scegli(opzioni.map(function (o) { return { testo: "num.opzione", param: { x: o[0] }, valore: o[1] }; }), titolo, param);
-      if (v === "giusta") { m.suono("prendi"); return; }
-      m.suono("errore");
-      if (errore) m.errore(errore + "-" + v);
-      await spiega(v);
-    }
+  /* aiuto a gradini per la domanda in corso (indizio → regola del quaderno → soluzione con i numeri della partita):
+     conta come aiuto «per le domande didattiche». Senza chiavi si toglie. */
+  domanda: function (m, id, chiavi, param) { m.aiutoQui(chiavi ? { id: "q-" + id, chi: "ottone", chiavi: chiavi, param: param } : null); },
+
+  /* una scelta ripetuta finché non si trova la risposta giusta; ogni errore ha la sua spiegazione.
+     aiuto (facoltativo): { id, chiavi, param } per gli aiuti della domanda (param: se manca, quelli della domanda) */
+  finoAlGiusto: async function (m, titolo, param, opzioni, spiega, errore, aiuto) {
+    if (aiuto) Mat1.domanda(m, aiuto.id, aiuto.chiavi, aiuto.param || param);
+    try {
+      for (;;) {
+        var v = await m.scegli(opzioni.map(function (o) { return { testo: "num.opzione", param: { x: o[0] }, valore: o[1] }; }), titolo, param);
+        if (v === "giusta") { m.suono("prendi"); return; }
+        m.suono("errore");
+        if (errore) m.errore(errore + "-" + v);
+        await spiega(v);
+      }
+    } finally { if (aiuto) Mat1.domanda(m, null); }
   }
 };
 

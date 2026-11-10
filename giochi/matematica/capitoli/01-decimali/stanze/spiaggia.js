@@ -188,7 +188,8 @@
     var opz = [[giusta, "giusta"], [d.intero + d.anti, "cerchi"], [M.sposta(giusta, -1), "cerchi"], [M.sposta(giusta, 1), "cerchi"], [M.sposta(M.sposta(giusta, -1), -1), "cerchi"]];
     var visti = {}; opz = opz.filter(function (o) { if (visti[o[0]]) return false; visti[o[0]] = true; return true; });
     M.mescola(opz);
-    await M.finoAlGiusto(m, "spi.taccuino.domanda", param, opz, function () { return m.dice("stevino", "spi.taccuino.errore", param); }, "m4-cerchi");
+    await M.finoAlGiusto(m, "spi.taccuino.domanda", param, opz, function () { return m.dice("stevino", "spi.taccuino.errore", param); }, "m4-cerchi",
+      { id: "taccuino", chiavi: ["hq.spi.taccuino.indizio", "m1.stevino", "hq.spi.taccuino.sol"], param: { s: param.s, x: giusta } });
     await m.dice("stevino", "spi.taccuino.giusto", { s: param.s, x: giusta });
     m.annota("m1.stevino");
   }
@@ -235,6 +236,7 @@
     var g = generatrice(d), nums = M.mescola(opzioniNumeratore(d, g)), dens = M.mescola(opzioniDenominatore(d, g));
     var scelta = { n: null, d: null };
     var param = { x: scrittura(d), np: d.periodo.length, na: d.anti.length, k: d.anti.length, senza: g.senza, non: g.nonPer, n: g.n, d: g.d };
+    M.domanda(m, "ing-" + i, ["hq.spi.ing.indizio", "m1.generatrice", "hq.spi.ing." + d.tipo], param);
     return m.pannello(function (p, chiudi) {
       function disegna(msg) {
         p.innerHTML = "";
@@ -272,7 +274,7 @@
         p.appendChild(monta);
       }
       disegna();
-    }, { chiudibile: false });
+    }, { chiudibile: false }).then(function () { M.domanda(m, null); });
   }
 
   async function ingranaggi(m) {

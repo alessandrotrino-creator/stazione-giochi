@@ -141,17 +141,20 @@
     /* divisione: il prezzo di un chilo */
     var pk = M.scrivi(p, 1), paramD = { k: d.k, g: pc.g, p: pk };
     var opzD = scegliQuattro([[pk, "giusta"], [M.sposta(pk, 1), "virgola"], [M.sposta(pk, -1), "virgola"], [M.scrivi(p * d.k - d.k * 10, 1), "sottrazione"], [M.scrivi(p * d.k * d.k, 1), "moltiplicazione"]]);
-    await M.finoAlGiusto(m, "mer.dividi.domanda", paramD, opzD, function (t) { return m.dice("stevino", "mer.errore.dividi." + t, paramD); }, "m5-divisione");
+    await M.finoAlGiusto(m, "mer.dividi.domanda", paramD, opzD, function (t) { return m.dice("stevino", "mer.errore.dividi." + t, paramD); }, "m5-divisione",
+      { id: "mer-dividi", chiavi: ["hq.mer.dividi.indizio", "hq.mer.dividi.regola", "hq.mer.dividi.sol"] });
     await m.dice("formaggiaia", "mer.dividi.giusto", paramD);
     var opz = [[giusta, "giusta"], [M.sposta(giusta, 1), "virgola"], [M.sposta(giusta, -1), "virgola"], [M.scrivi(p + w, 1), "somma"],
       [M.scrivi(Math.floor(p / 10) * Math.floor(w / 10) * 10 + (p % 10) * (w % 10), 1), "pezzi"]];
     opz = scegliQuattro(opz);
-    await M.finoAlGiusto(m, "mer.compra.domanda", param, opz, function (t) { return m.dice("stevino", "mer.errore.prezzo." + t, param); }, "m5-prezzo");
+    await M.finoAlGiusto(m, "mer.compra.domanda", param, opz, function (t) { return m.dice("stevino", "mer.errore.prezzo." + t, param); }, "m5-prezzo",
+      { id: "mer-compra", chiavi: ["hq.mer.compra.indizio", "m1.operazioni", "hq.mer.compra.sol"] });
     var resto = 500 - tot, r = kg(resto), conte = String(5 - Math.round(tot / 100));
     var inte = Math.floor(500 / 100) - Math.floor(tot / 100), dec = Math.abs(0 - tot % 100);
     var opzR = scegliQuattro([[r, "giusta"], [conte, "conte"], [M.scrivi(inte * 100 + dec, 2), "prestito"], [giusta, "totale"], [M.sposta(r, 1), "virgola"]]);
     var paramR = { x: giusta, r: r };
-    await M.finoAlGiusto(m, "mer.resto.domanda", paramR, opzR, function (t) { return m.dice("stevino", "mer.errore.resto." + t, paramR); }, "m5-resto");
+    await M.finoAlGiusto(m, "mer.resto.domanda", paramR, opzR, function (t) { return m.dice("stevino", "mer.errore.resto." + t, paramR); }, "m5-resto",
+      { id: "mer-resto", chiavi: ["hq.mer.resto.indizio", "m1.operazioni", "hq.mer.resto.sol"] });
     m.flag("formaggioComprato", true); m.togli("borsellino");
     m.prendi("edam");
     await m.dice("formaggiaia", "mer.compra.fatto", paramR);
@@ -167,6 +170,15 @@
   function pesa(m) {
     if (m.flag("bilanciaFatta")) return "mer.bilancia.giaFatta";
     var d = dati(m), messi = PESI.map(function () { return false; });
+    // per l'ultimo gradino dell'aiuto: una scelta di pesetti che fa giusto (la più corta), cercata tra tutte
+    var migliore = null;
+    for (var c = 1; c < (1 << PESI.length); c++) {
+      var s = 0, l = [];
+      PESI.forEach(function (v, i) { if (c & (1 << i)) { s += v; l.push(v); } });
+      if (s === d.t && (!migliore || l.length < migliore.length)) migliore = l;
+    }
+    M.domanda(m, "mer-bilancia", ["hq.mer.bilancia.indizio", "m1.operazioni", "hq.mer.bilancia.sol"],
+      { t: kg(d.t), somma: (migliore || []).map(function (v) { return kg(v); }).join(" + ") });
     return m.dice("formaggiaia", "mer.bilancia.inizio", { t: kg(d.t) }).then(function () {
       return m.pannello(function (p, chiudi) {
         function somma() { return PESI.reduce(function (s, v, i) { return s + (messi[i] ? v : 0); }, 0); }
@@ -197,6 +209,7 @@
         disegna();
       }, { chiudibile: false });
     }).then(async function () {
+      M.domanda(m, null);
       m.flag("bilanciaFatta", true);
       m.togli("pesetti");
       await m.dice("formaggiaia", "mer.bilancia.fatto", { t: kg(d.t) });
@@ -210,7 +223,8 @@
     var l = dati(m).l, a = l * l, giusta = M.scrivi(a, 2), param = { l: M.scrivi(l, 1), x: giusta };
     await m.dice("stevino", "mer.piastrella.1", param);
     var opz = scegliQuattro([[giusta, "giusta"], [M.scrivi(2 * l, 1), "doppio"], [M.scrivi(a, 1), "virgola"], [M.scrivi(a, 3), "virgola"]]);
-    await M.finoAlGiusto(m, "mer.piastrella.domanda", param, opz, function (t) { return m.dice("stevino", "mer.errore.area." + t, param); }, "m5-potenza");
+    await M.finoAlGiusto(m, "mer.piastrella.domanda", param, opz, function (t) { return m.dice("stevino", "mer.errore.area." + t, param); }, "m5-potenza",
+      { id: "mer-piastrella", chiavi: ["hq.mer.piastrella.indizio", "m1.operazioni", "hq.mer.piastrella.sol"] });
     m.flag("piastrellaFatta", true);
     m.suono("magia");
     await m.dice("stevino", "mer.piastrella.giusto", param);

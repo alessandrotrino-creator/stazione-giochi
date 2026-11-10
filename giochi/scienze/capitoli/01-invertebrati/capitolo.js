@@ -28,15 +28,22 @@ var Cap1 = {
         a.alone.style.opacity = ha ? 1 : 0;
       } };
   },
-  /* una scelta ripetuta finché la classe non trova la risposta giusta; ogni errore ha la sua spiegazione */
-  finoAlGiusto: async function (m, titolo, opzioni, spiega, errore) {
-    for (;;) {
-      var v = await m.scegli(opzioni.map(function (o) { return { testo: o[0], valore: o[1] }; }), titolo);
-      if (v === "giusta") { m.suono("prendi"); return; }
-      m.suono("errore");
-      if (errore) m.errore(errore + "-" + v);
-      await m.dice(Cap1.chi(m), spiega(v));
-    }
+  /* aiuto a gradini per la domanda in corso (indizio → regola del quaderno → soluzione):
+     conta come aiuto «per le domande didattiche». Senza chiavi si toglie. */
+  domanda: function (m, id, chiavi) { m.aiutoQui(chiavi ? { id: "q-" + id, chi: Cap1.chi(m), chiavi: chiavi } : null); },
+  /* una scelta ripetuta finché la classe non trova la risposta giusta; ogni errore ha la sua spiegazione.
+     aiuto (facoltativo): { id, chiavi } per gli aiuti della domanda */
+  finoAlGiusto: async function (m, titolo, opzioni, spiega, errore, aiuto) {
+    if (aiuto) Cap1.domanda(m, aiuto.id, aiuto.chiavi);
+    try {
+      for (;;) {
+        var v = await m.scegli(opzioni.map(function (o) { return { testo: o[0], valore: o[1] }; }), titolo);
+        if (v === "giusta") { m.suono("prendi"); return; }
+        m.suono("errore");
+        if (errore) m.errore(errore + "-" + v);
+        await m.dice(Cap1.chi(m), spiega(v));
+      }
+    } finally { if (aiuto) Cap1.domanda(m, null); }
   },
   /* carta caratteristica di un gruppo: va nello zaino e serve per il finale */
   carta: function (m, gruppo) {

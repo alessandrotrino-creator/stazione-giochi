@@ -43,7 +43,14 @@ var Piattaforma = (function () {
   }
 
   var api = {
-    gioco: function (def) { giochi[def.id] = def; if (ordine.indexOf(def.id) < 0) ordine.push(def.id); },
+    gioco: function (def) {
+      // a casa si vedono solo i capitoli con la parola d'ordine (o sempre aperti): quelli ancora in costruzione restano fuori
+      if (window.MODALITA === "casa" && window.IMPOSTAZIONI_CASA) {
+        var parole = window.IMPOSTAZIONI_CASA.parole || {};
+        def.capitoli = (def.capitoli || []).filter(function (c) { return c.sempreAperto || parole[def.id + "/" + c.id]; });
+      }
+      giochi[def.id] = def; if (ordine.indexOf(def.id) < 0) ordine.push(def.id);
+    },
     giochi: function () { return ordine.map(function (id) { return giochi[id]; }); },
     trova: function (id) { return giochi[id]; },
     // ogni anno ha il suo treno: "gioco.<id>.titolo.<anno>"; se manca (storia non ancora scritta) si vede solo la materia

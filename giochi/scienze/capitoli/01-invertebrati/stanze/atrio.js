@@ -155,11 +155,13 @@
 
   /* un esemplare messo nella porta: la classe sceglie l'incavo */
   async function mettiNellaPorta(m, ogg) {
+    C.domanda(m, "porta-" + ogg, ["hq.porta.indizio", VERTEBRATI[ogg] ? "q1.invertebrati" : "q1.simmetria", "hq.porta." + ogg]);
     var v = await m.scegli([
       { testo: "porta.incavo.raggiata", valore: "raggiata" },
       { testo: "porta.incavo.bilaterale", valore: "bilaterale" },
       { testo: "porta.incavo.nessuna", valore: "nessuna" }
     ], "porta.bivio");
+    C.domanda(m, null);
     if (VERTEBRATI[ogg]) {
       m.suono("errore"); m.errore("p1-vertebrato");
       await m.pensa("porta.rifiuta");

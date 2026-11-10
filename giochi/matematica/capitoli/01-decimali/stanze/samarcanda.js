@@ -160,6 +160,9 @@
     var k = chiavi(m)[i], n = k[0], d = k[1], giusta = tipo(n, d), g = mcd(n, d), trappola = i === 3;
     var param = { n: n, d: d, f: fattori(d / g).join(" × "), n2: n / g, d2: d / g, fd: fattori(d).join(" × ") };
     await m.pensa(trappola ? "sam.chiave.ultima" : "sam.chiave.prendi", param);
+    // nell'aiuto: «6 = 2 × 3», ma solo «7» se il denominatore è già un numero primo
+    M.domanda(m, "sam-" + i, ["hq.sam.indizio", "m1.razionali", "hq.sam." + giusta + (g > 1 ? ".semp" : "")],
+      Object.assign({ scomp: param.f === String(param.d2) ? param.f : param.d2 + " = " + param.f }, param));
     for (;;) {
       var v = await m.scegli(TIPI.map(function (t) { return { testo: "sam.opzione." + t, valore: t }; }), trappola ? "sam.bivio" : "sam.domanda", param);
       if (v === giusta) break;
@@ -169,6 +172,7 @@
       if (trappola && v === grezzo) { m.errore("m2-trappola"); await m.dice("alkashi", "sam.errore.trappola", param); }
       else { m.errore("m2-" + giusta + "-" + v); await m.dice("alkashi", "sam.errore." + giusta, param); }
     }
+    M.domanda(m, null);
     m.suono("magia");
     m.flag("aperta-" + giusta, true);
     m.flag("chiaviFatte", i + 1);
@@ -255,7 +259,7 @@
       var param = { x: r.x, cosa: Lingue.semplice("coord.cosa." + r.cosa), modo: Lingue.semplice("coord.modo." + r.modo), pos: Lingue.semplice("coord.pos." + r.k), k: r.k, c: r.x.split(",")[1][r.k], g: giusta };
       await M.finoAlGiusto(m, "coord.domanda", param, opz, function (tipo) {
         return m.dice("ottone", tipo === "modo" ? "coord.errore.modo." + r.modo : "coord.errore.cifra", param);
-      }, "m3-" + r.modo);
+      }, "m3-" + r.modo, { id: "coord-" + i, chiavi: ["hq.coord.indizio", "m1.arrotonda", "hq.coord." + r.modo] });
       m.flag("giroFatto", i + 1);
       m.suono("magia");
       await m.dice("ottone", "coord.giusto." + r.modo, param);

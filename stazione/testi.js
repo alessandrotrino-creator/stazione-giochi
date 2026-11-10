@@ -56,7 +56,8 @@ Lingue.aggiungi("it", {
   "cap.scienze.prova": "Stanza di prova",
   "cap.scienze.01": "La notte delle etichette",
   "cap.matematica.01": "La virgola rubata",
-  "cap.matematica.t1": "Sotto zero"
+  "cap.matematica.t1": "Sotto zero",
+  "cap.matematica.t2": "Il furto dei simboli"
 });
 
 Lingue.aggiungi("en", {
@@ -112,7 +113,8 @@ Lingue.aggiungi("en", {
   "cap.scienze.prova": "Test room",
   "cap.scienze.01": "The Night of the Labels",
   "cap.matematica.01": "The Stolen Decimal Comma",
-  "cap.matematica.t1": "Below Zero"
+  "cap.matematica.t1": "Below Zero",
+  "cap.matematica.t2": "The Symbol Heist"
 });
 
 Lingue.aggiungi("fr", {
@@ -168,7 +170,8 @@ Lingue.aggiungi("fr", {
   "cap.scienze.prova": "Salle d'essai",
   "cap.scienze.01": "La nuit des étiquettes",
   "cap.matematica.01": "La virgule volée",
-  "cap.matematica.t1": "Sous zéro"
+  "cap.matematica.t1": "Sous zéro",
+  "cap.matematica.t2": "Le Vol des symboles"
 });
 
 Lingue.aggiungi("ar", {
@@ -224,7 +227,8 @@ Lingue.aggiungi("ar", {
   "cap.scienze.prova": "غرفة التجربة",
   "cap.scienze.01": "ليلة البطاقات",
   "cap.matematica.01": "الفاصلة المسروقة",
-  "cap.matematica.t1": "تحت الصفر"
+  "cap.matematica.t1": "تحت الصفر",
+  "cap.matematica.t2": "سرقة الرموز"
 });
 
 Lingue.aggiungi("es", {
@@ -280,5 +284,6 @@ Lingue.aggiungi("es", {
   "cap.scienze.prova": "Sala de prueba",
   "cap.scienze.01": "La noche de las etiquetas",
   "cap.matematica.01": "La coma robada",
-  "cap.matematica.t1": "Bajo cero"
+  "cap.matematica.t1": "Bajo cero",
+  "cap.matematica.t2": "El robo de los símbolos"
 });

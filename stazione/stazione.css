@@ -201,6 +201,15 @@
 .doc-esito { margin: 10px 0 16px; padding: 12px 16px; border-radius: 12px; font-size: calc(20px * var(--t)); line-height: 1.5; }
 .doc-esito.si { background: #1f4a32; border: 3px solid #5fd08a; }
 .doc-esito.no { background: #4a1f26; border: 3px solid #ff8f8f; }
+.doc-tabella-box { overflow-x: auto; margin: 6px 0 10px; }
+.doc-tabella { border-collapse: collapse; width: 100%; font-size: calc(19px * var(--t)); background: #2a2448; border-radius: 10px; overflow: hidden; }
+.doc-tabella th, .doc-tabella td { padding: 7px 10px; border-bottom: 1px solid #4a4470; text-align: center; }
+.doc-tabella th { font-size: calc(16px * var(--t)); color: #9fd7ff; vertical-align: bottom; }
+.doc-tabella td:first-child { font-weight: 800; }
+.doc-tabella tfoot td { font-weight: 800; color: var(--oro); border-bottom: 0; background: #1f1a3a; }
+.doc-tabella tfoot td:first-child { text-align: left; }
+.doc-azioni { white-space: nowrap; }
+.doc-azioni .doc-piccolo { margin: 0 3px; font-size: calc(15px * var(--t)); padding: 4px 8px; }
 
 /* tanti biglietti (tutte le sezioni): più piccoli, cinque per riga, raggruppati per anno */
 .st-biglietti.fitti { gap: 12px; }

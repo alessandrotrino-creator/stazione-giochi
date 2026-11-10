@@ -246,7 +246,8 @@
     await M.finoAlGiusto(m, decimale ? "dam.domanda" : "dam.bivio", param, opzioni, function (tipo) {
       var chi = tipo === "rovescio" || tipo === "dentro" ? "uqlidisi" : "ottone";
       return m.dice(chi, "dam.errore." + tipo + (decimale ? "" : ".div"), { n: n, d: d, x: giusta });
-    }, "m1-" + (decimale ? (i === 0 ? "facile" : "zeri") : "divisione"));
+    }, "m1-" + (decimale ? (i === 0 ? "facile" : "zeri") : "divisione"),
+      { id: "dam-" + i, chiavi: ["hq.dam.indizio", "m1.foglio", "hq.dam.sol"], param: { n: n, d: d, x: giusta } });
     m.flag("pezza-" + p.id, true);
     m.suono("magia");
     await m.dice("mercante", "dam.giusto." + (i + 1), { n: n, d: d, x: giusta });

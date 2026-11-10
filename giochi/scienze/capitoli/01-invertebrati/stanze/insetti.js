@@ -27,7 +27,8 @@
     await m.pensa("meta.intro");
     for (var i = 0; i < METAMORFOSI.length; i++) {
       var n = i + 1;
-      await C.finoAlGiusto(m, "meta." + n + ".titolo", METAMORFOSI[i], function (v) { return "meta." + n + "." + v + ".spiega"; }, "p5-metamorfosi");
+      await C.finoAlGiusto(m, "meta." + n + ".titolo", METAMORFOSI[i], function (v) { return "meta." + n + "." + v + ".spiega"; }, "p5-metamorfosi",
+        { id: "meta-" + n, chiavi: ["hq.meta.indizio", "q1.metamorfosi", "hq.meta.n" + n] });
       m.flag("meta-" + n, true);
       await m.pensa("meta." + n + ".giusto");
     }
@@ -49,7 +50,8 @@
       var a = nomi[i];
       if (m.flag("art-" + a)) continue;
       var opz = GRUPPI_A.map(function (g) { return [g[0], g[1] === MODELLI[a].gruppo ? "giusta" : g[1]]; });
-      await C.finoAlGiusto(m, "cassa5.bivio." + a, opz, function () { return "art." + a + ".spiega"; }, "p5-" + a);
+      await C.finoAlGiusto(m, "cassa5.bivio." + a, opz, function () { return "art." + a + ".spiega"; }, "p5-" + a,
+        { id: "art-" + a, chiavi: ["hq.art.indizio", "q1.artropodi", "hq.art." + a] });
       m.flag("art-" + a, true);
       C.scintille(m, MODELLI[a].x + 50, 500);
       await m.pensa("art." + a + ".ok");
@@ -122,6 +124,7 @@
     if (m.flag("formicheFatte")) return "formiche.fatto";
     await m.pensa("formiche.1");
     var chi = m.flag("aljahizSveglio") ? "aljahiz" : C.chi(m);
+    C.domanda(m, "formiche", ["hq.formiche.indizio", "q1.formiche"]);
     for (;;) {
       var v = await m.scegli([
         { testo: "formiche.vista", valore: "vista" },
@@ -132,6 +135,7 @@
       m.suono("errore"); m.errore("p6-" + v);
       await m.dice(chi, "formiche." + v + ".spiega");
     }
+    C.domanda(m, null);
     m.suono("prendi");
     await m.dice(chi, "formiche.giusto");
     await m.dice("gamberto", "formiche.puntura");

@@ -35,7 +35,7 @@
       M.mescola(opz);
       await M.finoAlGiusto(m, n === 4 ? "fm.bivio" : "fm.domanda", { x: r.x }, opz, function (t) {
         return m.dice("ottone", "fm.errore." + t, { x: r.x });
-      }, "m6-" + n);
+      }, "m6-" + n, { id: "fm-" + n, chiavi: ["hq.fm.indizio", "m1.generatrice", "hq.fm.n" + n] });
       m.flag("colpo-" + n, true);
       m.suono("magia");
       await m.pensa("fm.colpo." + n + ".ok");

@@ -22,7 +22,8 @@
     var quale = restanti.length === 1 ? restanti[0]
       : await m.scegli(restanti.map(function (x) { return { testo: "quale." + x, valore: x }; }), "quale.titolo");
     await m.pensa("fix." + quale + ".domanda");
-    await C.finoAlGiusto(m, "fix.bivio", VETRINA[quale], function (v) { return "fix." + quale + "." + v + ".spiega"; }, "p2-" + quale);
+    await C.finoAlGiusto(m, "fix.bivio", VETRINA[quale], function (v) { return "fix." + quale + "." + v + ".spiega"; }, "p2-" + quale,
+      { id: "vetrina-" + quale, chiavi: ["hq.vetrina.indizio", quale === "spugna" ? "q1.poriferi" : "q1.cnidari", "hq.vetrina." + quale] });
     m.flag("fix-" + quale, true);
     C.scintille(m, { corallo: 770, spugna: 850, medusa: 930 }[quale], { corallo: 560, spugna: 480, medusa: 320 }[quale]);
     await m.pensa("fix." + quale + ".ok");
@@ -42,7 +43,8 @@
     await m.pensa("ciclo.intro");
     for (var i = 0; i < CICLO.length; i++) {
       var n = i + 1;
-      await C.finoAlGiusto(m, "ciclo." + n + ".titolo", CICLO[i], function (v) { return "ciclo." + n + "." + v + ".spiega"; }, "p2-ciclo");
+      await C.finoAlGiusto(m, "ciclo." + n + ".titolo", CICLO[i], function (v) { return "ciclo." + n + "." + v + ".spiega"; }, "p2-ciclo",
+        { id: "ciclo-" + n, chiavi: ["hq.ciclo.indizio", "q1.ciclo", "hq.ciclo.n" + n] });
       m.flag("ciclo-" + n, true);
       await m.pensa("ciclo." + n + ".giusto");
     }
@@ -113,7 +115,8 @@
     var quale = restanti.length === 1 ? restanti[0]
       : await m.scegli(restanti.map(function (x) { return { testo: "barattolo." + x, valore: x }; }), "barattoli.quale");
     var opz = GRUPPI.map(function (g) { return [g[0], g[1] === BARATTOLI[quale] ? "giusta" : g[1]]; });
-    await C.finoAlGiusto(m, "barattoli.bivio." + quale, opz, function () { return "bar." + quale + ".spiega"; }, "p4-" + quale);
+    await C.finoAlGiusto(m, "barattoli.bivio." + quale, opz, function () { return "bar." + quale + ".spiega"; }, "p4-" + quale,
+      { id: "bar-" + quale, chiavi: ["hq.bar.indizio", { verme: "q1.vermi", riccio: "q1.echinodermi" }[quale] || "q1.molluschi", "hq.bar." + quale] });
     m.flag("bar-" + quale, true);
     C.scintille(m, { verme: 927, polpo: 1007, riccio: 1087, chiocciola: 1167 }[quale], 270);
     await m.pensa("bar." + quale + ".ok");

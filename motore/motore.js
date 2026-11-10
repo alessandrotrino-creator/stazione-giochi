@@ -742,7 +742,9 @@ var Motore = (function () {
 
   /* aiuti a gradini: se il capitolo ha indicato un aiuto per la domanda in corso (api.aiutoQui) vale quello,
      altrimenti quello della stanza. Durante una domanda o una scelta l'aiuto compare come nuvoletta.
-     Ogni aiuto chiesto si conta: finisce nel riepilogo e nel codice di fine capitolo. */
+     Ogni aiuto chiesto si conta: finisce nel riepilogo e nel codice di fine capitolo.
+     Si contano anche per tipo: con un aiuto della domanda in corso (aiutoQui) è un aiuto «didattico»
+     (stato.aiutiDomande), altrimenti è un aiuto per gli enigmi con gli oggetti della stanza (stato.aiutiOggetti). */
   var aiutoContesto = null;
   function chiediAiuto() {
     var a = aiutoContesto || (cap.aiuti && cap.aiuti(api));
@@ -750,6 +752,8 @@ var Motore = (function () {
     var liv = livelloAiuto[a.id] || 0;
     livelloAiuto[a.id] = liv + 1;
     stato.aiuti = (stato.aiuti || 0) + 1;
+    if (aiutoContesto) stato.aiutiDomande = (stato.aiutiDomande || 0) + 1;
+    else stato.aiutiOggetti = (stato.aiutiOggetti || 0) + 1;
     var chiave = a.chiavi[Math.min(liv, a.chiavi.length - 1)];
     if (occupato || pannelloCorrente || sceltaCorrente || attesa) { nuvolaAiuto(a.chi, chiave, a.param); salva(); return; }
     esegui(function (m) { return m.dice(a.chi, chiave, a.param); });
@@ -891,12 +895,16 @@ var Motore = (function () {
     fine: function (titolo, testo) {
       var pr = Salvataggio.progressi(cap.gioco, classe);
       if (pr.completati.indexOf(cap.id) < 0) pr.completati.push(cap.id);
-      /* a casa: il codice personale di completamento (numero di registro + errori + aiuti), calcolato una volta sola */
+      /* a casa: il codice personale di completamento (numero di registro + errori + aiuti per gli oggetti
+         + aiuti per le domande), calcolato una volta sola */
       var chi = Casa.attiva() && Casa.chi(cap.gioco, cap.id);
       if (chi && !stato.codiceCasa) {
         var errori = 0;
         for (var k in stato.errori || {}) errori += stato.errori[k];
-        stato.codiceCasa = Casa.codice(chi, errori, stato.aiuti || 0);
+        var domande = stato.aiutiDomande || 0;
+        // partite iniziate prima del conteggio per tipo: gli aiuti di allora (non divisi) vanno con quelli per gli oggetti
+        var oggetti = Math.max(stato.aiutiOggetti || 0, (stato.aiuti || 0) - domande);
+        stato.codiceCasa = Casa.codice(chi, errori, oggetti, domande);
         salva();
       }
       if (stato.codiceCasa) { pr.codici = pr.codici || {}; pr.codici[cap.id] = stato.codiceCasa; }

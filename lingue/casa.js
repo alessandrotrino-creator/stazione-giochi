@@ -1,6 +1,6 @@
 /* =====================================================================
    Testi della MODALITÀ CASA (stazione e motore), nelle cinque lingue.
-   Italiano = lingua base. Le altre sono BOZZE DA REVISIONARE (Claude, 3 novembre 2026).
+   Italiano = lingua base. Le altre sono BOZZE DA REVISIONARE (Claude, 3 novembre 2026; codice a 8 caratteri: 10 novembre 2026).
    In fondo: le sostituzioni di inizio frase usate solo a casa
    («Bivio di classe:» diventa «Decidi tu:»).
    ===================================================================== */
@@ -19,7 +19,7 @@ Lingue.aggiungi("it", {
   "st.ottavio.casa": "Benvenuta, benvenuto! Prima di partire dimmi chi sei: classe e numero di registro.",
   "ui.gira": "Tieni il telefono o il tablet in orizzontale per giocare",
   "ui.casa.codiceTitolo": "Il tuo codice di completamento",
-  "ui.casa.codiceTesto": "Classe {classe}, numero {numero}. Scrivilo sul quaderno e portalo in classe all'insegnante. Lo ritrovi anche nella stazione, accanto al capitolo."
+  "ui.casa.codiceTesto": "Classe {classe}, numero {numero}. Copialo con cura sul quaderno: sono 8 caratteri, lettere e cifre (non ci sono mai 0, 1, O e I). Dentro ci sono i tuoi errori e gli aiuti che hai chiesto. Portalo in classe all'insegnante. Lo ritrovi anche nella stazione, accanto al capitolo."
 });
 Lingue.aggiungi("en", {
   "st.casa.indietro": "Change class",
@@ -36,7 +36,7 @@ Lingue.aggiungi("en", {
   "st.ottavio.casa": "Welcome! Before we leave, tell me who you are: class and register number.",
   "ui.gira": "Hold your phone or tablet sideways to play",
   "ui.casa.codiceTitolo": "Your completion code",
-  "ui.casa.codiceTesto": "Class {classe}, number {numero}. Write it in your exercise book and bring it to your teacher. You can also find it in the station, next to the chapter."
+  "ui.casa.codiceTesto": "Class {classe}, number {numero}. Copy it carefully into your exercise book: it has 8 characters, letters and digits (there is never a 0, 1, O or I). It contains your mistakes and the hints you asked for. Bring it to your teacher. You can also find it in the station, next to the chapter."
 });
 Lingue.aggiungi("fr", {
   "st.casa.indietro": "Changer de classe",
@@ -53,7 +53,7 @@ Lingue.aggiungi("fr", {
   "st.ottavio.casa": "Bienvenue ! Avant de partir, dis-moi qui tu es : ta classe et ton numéro.",
   "ui.gira": "Tiens ton téléphone ou ta tablette à l'horizontale pour jouer",
   "ui.casa.codiceTitolo": "Ton code de fin de chapitre",
-  "ui.casa.codiceTesto": "Classe {classe}, numéro {numero}. Écris-le dans ton cahier et apporte-le à ton professeur. Tu le retrouves aussi dans la gare, à côté du chapitre."
+  "ui.casa.codiceTesto": "Classe {classe}, numéro {numero}. Recopie-le avec soin dans ton cahier : il a 8 caractères, des lettres et des chiffres (il n'y a jamais de 0, 1, O ni I). Il contient tes erreurs et les aides que tu as demandées. Apporte-le à ton professeur. Tu le retrouves aussi dans la gare, à côté du chapitre."
 });
 Lingue.aggiungi("ar", {
   "st.casa.indietro": "تغيير الصف",
@@ -70,7 +70,7 @@ Lingue.aggiungi("ar", {
   "st.ottavio.casa": "أهلًا وسهلًا! قبل الانطلاق قل لي مَن أنت: الصف ورقمك في السجلّ.",
   "ui.gira": "أمسك الهاتف أو الجهاز اللوحي أفقيًا لتلعب",
   "ui.casa.codiceTitolo": "رمز إتمام الفصل الخاص بك",
-  "ui.casa.codiceTesto": "الصف {classe}، الرقم {numero}. اكتبه في دفترك وأحضره إلى المعلّم. تجده أيضًا في المحطة بجانب الفصل."
+  "ui.casa.codiceTesto": "الصف {classe}، الرقم {numero}. انسخه بعناية في دفترك: فيه 8 رموز، حروف وأرقام (لا يوجد فيه أبدًا 0 أو 1 أو O أو I). فيه أخطاؤك والمساعدات التي طلبتها. أحضره إلى المعلّم. تجده أيضًا في المحطة بجانب الفصل."
 });
 Lingue.aggiungi("es", {
   "st.casa.indietro": "Cambiar de clase",
@@ -87,7 +87,7 @@ Lingue.aggiungi("es", {
   "st.ottavio.casa": "¡Bienvenida, bienvenido! Antes de salir, dime quién eres: clase y número de lista.",
   "ui.gira": "Pon el teléfono o la tableta en horizontal para jugar",
   "ui.casa.codiceTitolo": "Tu código de fin de capítulo",
-  "ui.casa.codiceTesto": "Clase {classe}, número {numero}. Escríbelo en tu cuaderno y llévaselo a tu profesor. También lo encuentras en la estación, junto al capítulo."
+  "ui.casa.codiceTesto": "Clase {classe}, número {numero}. Cópialo con cuidado en tu cuaderno: tiene 8 caracteres, letras y cifras (nunca hay 0, 1, O ni I). Dentro están tus errores y las ayudas que has pedido. Llévaselo a tu profesor. También lo encuentras en la estación, junto al capítulo."
 });
 
 /* a casa si gioca da soli: i «bivi di classe» diventano «decidi tu» */

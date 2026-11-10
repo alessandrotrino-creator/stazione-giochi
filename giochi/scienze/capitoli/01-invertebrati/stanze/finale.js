@@ -38,7 +38,8 @@
       var n = i + 1;
       if (m.flag("duello-" + n)) continue;
       await m.dice("etichetti", "duello." + n + ".barone");
-      await C.finoAlGiusto(m, "duello.bivio", DUELLO[i].opz, function (v) { return "duello." + n + "." + v + ".spiega"; }, "p7-" + n);
+      await C.finoAlGiusto(m, "duello.bivio", DUELLO[i].opz, function (v) { return "duello." + n + "." + v + ".spiega"; }, "p7-" + n,
+        { id: "duello-" + n, chiavi: ["hq.duello.indizio", "carta." + DUELLO[i].carta + ".d", "hq.duello.n" + n] });
       m.togli("carta-" + DUELLO[i].carta);
       m.flag("duello-" + n, true);
       m.suono("magia");

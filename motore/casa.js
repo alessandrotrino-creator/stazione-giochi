@@ -23,24 +23,48 @@ var Casa = (function () {
   function lettere(n, quante) { var s = ""; for (var i = 0; i < quante; i++) { s = ALFA[n & 31] + s; n >>>= 5; } return s; }
   function numero(s) { var n = 0; for (var i = 0; i < s.length; i++) { var k = ALFA.indexOf(s[i]); if (k < 0) return -1; n = n * 32 + k; } return n; }
 
-  /* le prime tre lettere dipendono solo da studente e capitolo (si stampano nella tabella);
-     le ultime due contengono, mascherati, errori e aiuti (fino a 15 ciascuno) più un controllo */
+  /* Il codice di completamento (dal 10 novembre 2026): AAA-BBB-CC, 8 caratteri.
+     - AAA dipende solo da studente e capitolo (si stampa nella tabella);
+     - BBB-CC contiene, mascherati, errori, aiuti per gli oggetti e aiuti per le domande
+       (da 0 a 99 ciascuno: 99 vuol dire «99 o più») e 5 bit di controllo:
+       un codice copiato male passa solo 1 volta su 32.
+     I vecchi codici AAA-BB (fino al 9 novembre 2026: errori e aiuti fino a 15, aiuti non divisi)
+     si accettano ancora con verifica(). */
+  var MAX = 99;
   function fissa(chi) { return lettere(h32(base(chi) + "|A"), 3); }
-  function codice(chi, errori, aiuti) {
-    var b = base(chi), p = Math.min(errori, 15) * 16 + Math.min(aiuti, 15);
+  function tra(n, max) { n = Math.floor(+n || 0); return n < 0 ? 0 : n > max ? max : n; }
+  function codice(chi, errori, aiutiOggetti, aiutiDomande) {
+    var b = base(chi), p = tra(errori, MAX) * 10000 + tra(aiutiOggetti, MAX) * 100 + tra(aiutiDomande, MAX);
+    var v = ((p << 5) | (h32(b + "|K" + p) & 31)) ^ (h32(b + "|N") & 0x1ffffff);
+    var s = lettere(v, 5);
+    return fissa(chi) + "-" + s.slice(0, 3) + "-" + s.slice(3);
+  }
+  /* il vecchio codice AAA-BB: serve solo per le prove (i ragazzi delle seconde ne hanno già) */
+  function codiceVecchio(chi, errori, aiuti) {
+    var b = base(chi), p = tra(errori, 15) * 16 + tra(aiuti, 15);
     var v = ((p << 2) | (h32(b + "|C" + p) & 3)) ^ (h32(b + "|M") & 1023);
     return fissa(chi) + "-" + lettere(v, 2);
   }
+  /* risultato: { ok, formato: 2, errori, aiutiOggetti, aiutiDomande, aiuti, massimo: 99 }
+     oppure, per un vecchio codice, { ok, formato: 1, errori, aiuti, massimo: 15 } (aiuti non divisi) */
   function verifica(chi, testo) {
     var s = String(testo || "").toUpperCase().replace(/[^0-9A-Z]/g, "");
-    if (s.length !== 5) return { ok: false, motivo: "Il codice deve avere 5 caratteri (per esempio K7Q-4M)." };
+    if (s.length !== 8 && s.length !== 5) return { ok: false, motivo: "Il codice deve avere 8 caratteri, per esempio K7Q-4MX-ZP (i vecchi codici ne hanno 5, come K7Q-4M)." };
+    if (numero(s) < 0) return { ok: false, motivo: "Il codice contiene caratteri che non esistono (0, 1, O, I): forse è stato copiato male." };
     if (s.slice(0, 3) !== fissa(chi)) return { ok: false, motivo: "Non è il codice di questo numero di registro per questo capitolo." };
-    var b = base(chi), v = numero(s.slice(3));
-    if (v < 0) return { ok: false, motivo: "Il codice contiene caratteri che non esistono (0, 1, O, I)." };
-    v ^= h32(b + "|M") & 1023;
-    var p = v >> 2;
-    if ((h32(b + "|C" + p) & 3) !== (v & 3)) return { ok: false, motivo: "Le ultime due lettere non tornano: codice copiato male o modificato." };
-    return { ok: true, errori: p >> 4, aiuti: p & 15 };
+    var b = base(chi), v = numero(s.slice(3)), p;
+    if (s.length === 5) {
+      v ^= h32(b + "|M") & 1023;
+      p = v >> 2;
+      if ((h32(b + "|C" + p) & 3) !== (v & 3)) return { ok: false, motivo: "Le ultime due lettere non tornano: codice copiato male o modificato." };
+      return { ok: true, formato: 1, massimo: 15, errori: p >> 4, aiuti: p & 15 };
+    }
+    v ^= h32(b + "|N") & 0x1ffffff;
+    p = v >>> 5;
+    if (p > 999999 || (h32(b + "|K" + p) & 31) !== (v & 31))
+      return { ok: false, motivo: "Le ultime cinque lettere non tornano: codice copiato male o modificato." };
+    var e = Math.floor(p / 10000), o = Math.floor(p / 100) % 100, d = p % 100;
+    return { ok: true, formato: 2, massimo: MAX, errori: e, aiutiOggetti: o, aiutiDomande: d, aiuti: o + d };
   }
 
   /* l'impronta misteriosa: quattro particolari che cambiano da studente a studente */
@@ -97,7 +121,7 @@ var Casa = (function () {
       var g = api.giocatore(), c = g && Piattaforma.trovaClasse(g.classe);
       return c ? { gioco: gioco, capitolo: capitolo, classe: c.nome, numero: g.numero } : null;
     },
-    codice: codice, fissa: fissa, verifica: verifica,
+    codice: codice, codiceVecchio: codiceVecchio, fissa: fissa, verifica: verifica,
     impronta: impronta, descrizione: descrizione, svgImpronta: svgImpronta,
     parola: parola,
     parolaGiusta: function (gioco, cap, testo) { var p = parola(gioco, cap); return !!p && normale(p) === normale(testo); },
