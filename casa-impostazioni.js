@@ -11,6 +11,7 @@ var IMPOSTAZIONI_CASA = {
   parole: {
     "scienze/cap01": "NTwLbAkv",
     "matematica/cap01": "OTcbcAorYzh4Dgo=",
-    "matematica/t3cap01": "PDAcehU8dTg="
+    "matematica/t3cap01": "PDAcehU8dTg=",
+    "matematica/t3cap02": "NTYBdhcnfg=="
   }
 };
