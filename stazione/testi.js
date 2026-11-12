@@ -57,6 +57,7 @@ Lingue.aggiungi("it", {
   "cap.scienze.01": "La notte delle etichette",
   "cap.matematica.01": "La virgola rubata",
   "cap.matematica.t1": "Sotto zero",
+  "cap.matematica.g1": "Il cerchio senza π",
   "cap.matematica.t2": "Il furto dei simboli"
 });
 
@@ -114,6 +115,7 @@ Lingue.aggiungi("en", {
   "cap.scienze.01": "The Night of the Labels",
   "cap.matematica.01": "The Stolen Decimal Comma",
   "cap.matematica.t1": "Below Zero",
+  "cap.matematica.g1": "The Circle Without π",
   "cap.matematica.t2": "The Symbol Heist"
 });
 
@@ -171,6 +173,7 @@ Lingue.aggiungi("fr", {
   "cap.scienze.01": "La nuit des étiquettes",
   "cap.matematica.01": "La virgule volée",
   "cap.matematica.t1": "Sous zéro",
+  "cap.matematica.g1": "Le Cercle sans π",
   "cap.matematica.t2": "Le Vol des symboles"
 });
 
@@ -228,6 +231,7 @@ Lingue.aggiungi("ar", {
   "cap.scienze.01": "ليلة البطاقات",
   "cap.matematica.01": "الفاصلة المسروقة",
   "cap.matematica.t1": "تحت الصفر",
+  "cap.matematica.g1": "الدائرة بلا π",
   "cap.matematica.t2": "سرقة الرموز"
 });
 
@@ -285,5 +289,6 @@ Lingue.aggiungi("es", {
   "cap.scienze.01": "La noche de las etiquetas",
   "cap.matematica.01": "La coma robada",
   "cap.matematica.t1": "Bajo cero",
+  "cap.matematica.g1": "El círculo sin π",
   "cap.matematica.t2": "El robo de los símbolos"
 });

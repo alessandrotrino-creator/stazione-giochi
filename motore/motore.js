@@ -175,20 +175,58 @@ var Motore = (function () {
     });
     // punti interattivi
     D.hotspot.innerHTML = "";
+    // ordine dei punti: sotto i grandi (porto, fiume…), sopra i piccoli; in cima i personaggi.
+    // Un personaggio fermo (fisso) si clicca sulla sua vera sagoma, non su un rettangolo.
+    var punti = [];
     (s.hotspot || []).forEach(function (h) {
       if (h.presente && !h.presente(api)) return;
-      var f = document.createElementNS(NS, "path");
-      f.setAttribute("d", h.forma);
-      f.setAttribute("class", "hs");
+      var a = h.sagoma === false ? null : attori[typeof h.sagoma === "string" ? h.sagoma : h.id];
+      if (a && !a.def.fisso && !h.sagoma) a = null;
+      if (a && a.el.style.display === "none") a = null;
+      var f;
+      if (a) {
+        f = document.createElementNS(NS, "g");
+        f.setAttribute("class", "hs hs-sagoma");
+        var p0 = a.def.piedi || [0, 0], sc = a.def.fisso ? 1 : scalaProfondita(a.y);
+        f.setAttribute("transform", "translate(" + a.x + " " + a.y + ") scale(" + a.k * sc * a.dir + " " + a.k * sc + ") translate(" + -p0[0] + " " + -p0[1] + ")");
+        f.innerHTML = (a.svg && a.svgs[a.vista] ? a.svgs[a.vista] : a.svg).innerHTML;
+      } else {
+        f = document.createElementNS(NS, "path");
+        f.setAttribute("d", formaDi(h));
+        f.setAttribute("class", "hs");
+      }
       f.setAttribute("data-id", h.id);
-      D.hotspot.appendChild(f);
+      punti.push({ el: f, livello: h.livello != null ? h.livello : a ? 1e9 : -areaForma(formaDi(h)) });
     });
+    punti.sort(function (p, q) { return p.livello - q.livello; });
+    punti.forEach(function (p) { D.hotspot.appendChild(p.el); });
     // attori presenti o no (per esempio Gamberto, dopo che è saltato nel barattolo) e aggiornamenti propri
     Object.keys(attori).forEach(function (id) {
       var a = attori[id];
       a.el.style.display = a.def.visibile && !a.def.visibile(api) ? "none" : "";
       if (a.def.aggiorna) a.def.aggiorna(a, api);
     });
+  }
+
+  /* la forma può dipendere dalla partita (per esempio un oggetto che si sposta) */
+  function formaDi(h) { return typeof h.forma === "function" ? h.forma(api) : h.forma; }
+
+  /* area approssimata di una forma (somma dei rettangoli che contengono i suoi pezzi): serve solo per l'ordine */
+  function areaForma(d) {
+    var tot = 0;
+    String(d || "").split(/(?=[Mm])/).forEach(function (pezzo) {
+      var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity, x = 0, y = 0;
+      // forme scritte con M, L, H, V (le più comuni); per le altre lettere si leggono le coppie di numeri
+      pezzo.replace(/([A-Za-z])([^A-Za-z]*)/g, function (_, c, num) {
+        var v = (num.match(/-?\d*\.?\d+/g) || []).map(Number);
+        if (c === "H") v.forEach(function (q) { x = q; x0 = Math.min(x0, x); x1 = Math.max(x1, x); });
+        else if (c === "V") v.forEach(function (q) { y = q; y0 = Math.min(y0, y); y1 = Math.max(y1, y); });
+        else for (var i = 0; i + 1 < v.length; i += 2) { x = v[i]; y = v[i + 1]; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+        if (c === "H" || c === "V") { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+      });
+      if (x1 > x0 && y1 > y0) tot += (x1 - x0) * (y1 - y0);
+    });
+    return tot;
   }
 
   function trovaHotspot(t) {
@@ -455,7 +493,8 @@ var Motore = (function () {
   }
 
   /* ---------------- tastierino numerico (risposte da scrivere, senza scelta multipla) ----------------
-     opz: { segno: tasto "−", virgola: tasto ",", max: cifre massime (8) }.
+     opz: { segno: tasto "−", virgola: tasto ",", pi: tasto "π" (valore esatto, es. "32π"), max: cifre massime (8),
+           calcolatrice: una calcolatrice accanto, per i conti (il risultato va poi scritto nel tastierino) }.
      Restituisce il testo scritto ("−1763", "0,5"); il controllo lo fa il capitolo con api.numero(). */
   var tastierinoCorrente = null;
   function tastierino(titolo, param, opz) {
@@ -464,10 +503,12 @@ var Motore = (function () {
       var t = { testo: "" };
       t.premi = function (k) {
         if (k === "ok") {
-          if (!/\d/.test(t.testo)) return;
+          if (!/\d|π/.test(t.testo)) return;
           tastierinoCorrente = null; chiudiPannello(); Suoni.effetto("pagina"); fine(t.testo); return;
         }
         if (k === "canc") t.testo = t.testo.slice(0, -1);
+        else if (t.testo.indexOf("π") >= 0) return;   // dopo π non si scrive altro (si può solo cancellare)
+        else if (k === "π") { if (!opz.pi || /,$/.test(t.testo)) return; t.testo += "π"; }
         else if (k === "−") { if (!opz.segno) return; t.testo = t.testo.charAt(0) === "−" ? t.testo.slice(1) : "−" + t.testo; }
         else if (k === ",") { if (!opz.virgola || t.testo.indexOf(",") >= 0) return; t.testo += /\d$/.test(t.testo) ? "," : "0,"; }
         else if (/^\d$/.test(k)) { if (t.testo.replace(/\D/g, "").length >= (opz.max || 8)) return; t.testo += k; }
@@ -476,12 +517,13 @@ var Motore = (function () {
         disegnaPannello();
       };
       tastierinoCorrente = t;
+      var calc = opz.calcolatrice ? nuovaCalcolatrice() : null;
       apriPannello(function (p) {
         var box = el("div", "tn-box");
         box.appendChild(el("h2", "", T(titolo, param)));
         box.appendChild(el("div", "tn-schermo num", t.testo || "&nbsp;"));
         var g = el("div", "tn-tasti");
-        ["7", "8", "9", "4", "5", "6", "1", "2", "3", opz.segno ? "−" : "", "0", opz.virgola ? "," : ""].forEach(function (k) {
+        ["7", "8", "9", "4", "5", "6", "1", "2", "3", opz.segno ? "−" : (opz.pi ? "π" : ""), "0", opz.virgola ? "," : ""].forEach(function (k) {
           var b = el("button", "tn-tasto" + (k ? "" : " vuoto"), k || "&nbsp;");
           if (k) b.addEventListener("click", function (e) { e.stopPropagation(); t.premi(k); });
           g.appendChild(b);
@@ -501,11 +543,107 @@ var Motore = (function () {
           an.addEventListener("click", function (e) { e.stopPropagation(); tastierinoCorrente = null; chiudiPannello(); fine(null); });
           box.appendChild(an);
         }
-        p.appendChild(box);
+        if (calc) { var due = el("div", "tn-con-calc"); due.appendChild(box); due.appendChild(calc.disegna()); p.appendChild(due); }
+        else p.appendChild(box);
       }, { chiudibile: false, aiuto: true });
     });
   }
   /* "−1763" → −1763; "0,50" → 0,5 (così 0,50 e 0,5 valgono uguale) */
+  /* ---------------- calcolatrice (accanto al tastierino, per i conti con 3,14) ----------------
+     Virgola decimale, × e : come a scuola, x² e √. Fa solo i conti: il risultato lo scrive lo studente. */
+  function nuovaCalcolatrice() {
+    var c = { espr: "", risultato: null, box: null };
+    function mostra() {
+      if (!c.box) return;
+      c.box.querySelector(".calc-espr").innerHTML = c.espr || "&nbsp;";
+      c.box.querySelector(".calc-ris").innerHTML = c.risultato === null ? "&nbsp;" : "= " + c.risultato;
+    }
+    /* piccolo analizzatore: + − × : ( ) con le precedenze giuste, ² (al quadrato) e √ (radice quadrata) */
+    function valuta(testo) {
+      var t = testo.replace(/,/g, "."), i = 0;
+      function guarda() { return t.charAt(i); }
+      function numero() {
+        var m = /^\d+(\.\d+)?|^\.\d+/.exec(t.slice(i));
+        if (!m) throw new Error("numero");
+        i += m[0].length; return parseFloat(m[0]);
+      }
+      function primario() {
+        var v;
+        if (guarda() === "(") { i++; v = somma(); if (guarda() !== ")") throw new Error(")"); i++; }
+        else v = numero();
+        while (guarda() === "²") { i++; v = v * v; }
+        return v;
+      }
+      function fattore() {
+        if (guarda() === "−") { i++; return -fattore(); }
+        if (guarda() === "√") { i++; var r = fattore(); if (r < 0) throw new Error("√"); return Math.sqrt(r); }
+        return primario();
+      }
+      function prodotto() {
+        var v = fattore();
+        while (guarda() === "×" || guarda() === ":") { var op = t.charAt(i++), w = fattore(); v = op === "×" ? v * w : v / w; }
+        return v;
+      }
+      function somma() {
+        var v = prodotto();
+        while (guarda() === "+" || guarda() === "−") { var op = t.charAt(i++), w = prodotto(); v = op === "+" ? v + w : v - w; }
+        return v;
+      }
+      var v = somma();
+      if (i < t.length) throw new Error("resto");
+      return v;
+    }
+    function calcola() {
+      try {
+        var v = valuta(c.espr);
+        if (!isFinite(v)) { c.risultato = "?"; return; }
+        c.risultato = String(Math.round(v * 1e6) / 1e6).replace("-", "−").replace(".", ",");
+      } catch (e) { c.risultato = "?"; }
+    }
+    function premi(k) {
+      if (k === "C") { c.espr = ""; c.risultato = null; }
+      else if (k === "⌫") c.espr = c.espr.slice(0, -1);
+      else if (k === "=") calcola();
+      else if ((k === "√" || k === "x²") && c.risultato !== null && c.risultato !== "?") {
+        // come nelle calcolatrici vere: √ e x² dopo «=» agiscono subito sul risultato
+        c.espr = k === "√" ? "√" + c.risultato : "(" + c.risultato + ")²";
+        calcola();
+      }
+      else {
+        // dopo «=» un numero ricomincia da capo, un'operazione continua dal risultato
+        if (c.risultato !== null && c.risultato !== "?") c.espr = /[+−×:²]/.test(k) ? c.risultato : "";
+        c.risultato = null;
+        c.espr += k === "x²" ? "²" : k;
+      }
+      Suoni.effetto("clic");
+      mostra();
+    }
+    c.disegna = function () {
+      var b = el("div", "calc");
+      b.appendChild(el("div", "calc-titolo", "🧮 " + T("ui.calcolatrice")));
+      var sc = el("div", "calc-schermo num");
+      sc.appendChild(el("div", "calc-espr", "&nbsp;")); sc.appendChild(el("div", "calc-ris", "&nbsp;"));
+      b.appendChild(sc);
+      var g = el("div", "calc-tasti");
+      ["C", "x²", "√", ":", "7", "8", "9", "×", "4", "5", "6", "−", "1", "2", "3", "+", "0", ",", "(", ")", "⌫", "="].forEach(function (k) {
+        var t = el("button", "calc-tasto" + (/[+−×:=]/.test(k) ? " op" : "") + (k === "x²" || k === "√" ? " fn" : "") + (k === "C" ? " canc" : "") + (k === "=" ? " uguale" : ""), k);
+        t.addEventListener("click", function (e) { e.stopPropagation(); premi(k); });
+        g.appendChild(t);
+      });
+      b.appendChild(g);
+      c.box = b; mostra();
+      return b;
+    };
+    return c;
+  }
+
+  /* "32π" → 32 (il numero davanti a π; "π" da solo vale 1); se non c'è π restituisce null */
+  function numeroPi(testo) {
+    testo = String(testo);
+    if (testo.indexOf("π") < 0) return null;
+    var davanti = testo.replace("π", "");
+    return davanti === "" ? 1 : numero(davanti);
+  }
   function numero(testo) {
     var n = parseFloat(String(testo).replace("−", "-").replace(",", "."));
     return isNaN(n) ? null : n;
@@ -766,8 +904,8 @@ var Motore = (function () {
 
   function tastiera(e) {
     if (tastierinoCorrente) {
-      var k = e.key === "Enter" ? "ok" : e.key === "Backspace" ? "canc" : e.key === "-" ? "−" : e.key === "." ? "," : e.key;
-      if (/^(\d|ok|canc|−|,)$/.test(k)) { e.preventDefault(); tastierinoCorrente.premi(k); }
+      var k = e.key === "Enter" ? "ok" : e.key === "Backspace" ? "canc" : e.key === "-" ? "−" : e.key === "." ? "," : e.key === "p" || e.key === "P" ? "π" : e.key;
+      if (/^(\d|ok|canc|−|,|π)$/.test(k)) { e.preventDefault(); tastierinoCorrente.premi(k); }
       return;
     }
     if (e.key === "Escape") { if (pannelloCorrente && pannelloCorrente.chiudibile) chiudiPannello(); else deseleziona(); nascondiVentaglio(); }
@@ -848,6 +986,7 @@ var Motore = (function () {
     /* aiuti specifici per la domanda in corso: { id, chi, chiavi: [dal più vago alla soluzione], param }; null per toglierli */
     aiutoQui: function (a) { aiutoContesto = a; },
     numero: numero,
+    numeroPi: numeroPi,
     cammina: function (x, y, chi) { return cammina(chi || cap.protagonista, x, y); },
     guarda: function (dir, chi) { var a = attori[chi || cap.protagonista]; if (a) { a.dir = dir; impostaVista(a, "profilo"); posiziona(a); } },
     vista: function (nome, chi) { var a = attori[chi || cap.protagonista]; if (a) impostaVista(a, nome); },

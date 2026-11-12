@@ -33,6 +33,11 @@ body { -webkit-user-select: none; user-select: none; touch-action: manipulation;
 .l-hotspot { width: 1600px; height: 900px; }
 .l-hotspot .hs { fill: rgba(255, 255, 255, 0); pointer-events: all; cursor: pointer; transition: fill .2s, stroke .2s; }
 .l-hotspot .hs:hover { fill: rgba(255, 220, 140, .08); }
+/* sagoma di un personaggio: la stessa forma del disegno, ma invisibile (si illumina con la lente) */
+.l-hotspot .hs-sagoma, .l-hotspot .hs-sagoma * { fill: rgba(255, 255, 255, 0) !important; stroke: rgba(255, 255, 255, 0) !important; animation: none !important; filter: none !important; }
+.l-hotspot .hs-sagoma * { stroke-width: 18px !important; stroke-linejoin: round; } /* un po' di margine: niente buchi tra i pezzi del disegno */
+.l-hotspot .hs-sagoma:hover * { fill: rgba(255, 220, 140, .06) !important; }
+.l-hotspot.lente .hs-sagoma * { fill: rgba(255, 200, 60, .45) !important; stroke: none !important; }
 .l-hotspot.lente .hs { fill: rgba(255, 211, 107, .18); stroke: #ffd36b; stroke-width: 4; stroke-dasharray: 14 8; animation: lampeggio 0.7s ease-in-out 3; }
 @keyframes lampeggio { 50% { fill: rgba(255, 211, 107, .38); } }
 
@@ -467,3 +472,22 @@ html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparen
   background: #fff8d8; color: var(--inchiostro); border: 4px solid #e8b84a; box-shadow: 0 10px 30px #0008; font-size: calc(26px * var(--t)); line-height: 1.35; cursor: pointer;
 }
 .aiuto-nuvola b { color: #8a5a10; }
+
+/* calcolatrice accanto al tastierino */
+.tn-con-calc { display: flex; gap: 28px; align-items: flex-start; justify-content: center; }
+.tn-con-calc .tn-box { flex: 0 0 470px; }
+.tn-con-calc .tn-box h2 { font-size: calc(30px * var(--t)); }
+.tn-con-calc .calc { flex: 0 0 330px; margin-top: 8px; }
+.calc { width: 330px; padding: 14px; border-radius: 18px; background: #2a2440; border: 4px solid var(--inchiostro); box-shadow: 0 6px 0 var(--inchiostro); direction: ltr; }
+.calc-titolo { color: var(--carta); font-weight: 800; font-size: calc(22px * var(--t)); margin-bottom: 8px; text-align: center; }
+.calc-schermo { background: #0d0b12; border: 4px solid var(--carta); border-radius: 12px; padding: 6px 12px; margin-bottom: 12px; text-align: end; min-height: 76px; }
+.calc-espr { color: #c8c4dc; font-size: calc(24px * var(--t)); min-height: 30px; word-break: break-all; }
+.calc-ris { color: #9fffb0; font-size: calc(34px * var(--t)); font-weight: 800; min-height: 40px; }
+.calc-tasti { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.calc-tasto { font-family: inherit; font-size: calc(26px * var(--t)); font-weight: 800; height: 56px; cursor: pointer; border-radius: 10px;
+  border: 3px solid var(--inchiostro); box-shadow: 0 4px 0 var(--inchiostro); background: var(--carta); color: var(--inchiostro); }
+.calc-tasto:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--inchiostro); }
+.calc-tasto.op { background: #9fd8ff; }
+.calc-tasto.canc { background: #ff8a7a; }
+.calc-tasto.fn { background: #c8f0b0; }
+.calc-tasto.uguale { grid-column: span 2; background: var(--oro); }

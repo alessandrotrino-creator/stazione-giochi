@@ -19,6 +19,7 @@ Lingue.registra("ar", {
   "ui.conferma": "تأكيد",
   "ui.cancella": "حذف",
   "ui.annulla": "إلغاء",
+  "ui.calcolatrice": "الآلة الحاسبة",
   "ui.usaOggetto": "استعمل هذا الشيء",
   "ui.usaCon": "استعمل {ogg} مع {cosa}",
   "ui.tocca": "◀ المس للمتابعة",

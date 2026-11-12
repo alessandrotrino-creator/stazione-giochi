@@ -12,6 +12,7 @@ var IMPOSTAZIONI_CASA = {
     "scienze/cap01": "NTwLbAkv",
     "matematica/cap01": "OTcbcAorYzh4Dgo=",
     "matematica/t3cap01": "PDAcehU8dTg=",
-    "matematica/t3cap02": "NTYBdhcnfg=="
+    "matematica/t3cap02": "NTYBdhcnfg==",
+    "matematica/t3g1": "KDAIax8tfg=="
   }
 };

@@ -18,6 +18,7 @@ Lingue.registra("es", {
   "ui.conferma": "Confirmar",
   "ui.cancella": "Borrar",
   "ui.annulla": "Cancelar",
+  "ui.calcolatrice": "Calculadora",
   "ui.usaOggetto": "Usar este objeto",
   "ui.usaCon": "Usar {ogg} con {cosa}",
   "ui.tocca": "▶ toca para continuar",
